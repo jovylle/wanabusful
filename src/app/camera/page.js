@@ -1,4 +1,6 @@
-// pages/camera.js
+// src/app/camera/page.js
+
+"use client";
 
 import { useEffect, useRef } from 'react';
 
