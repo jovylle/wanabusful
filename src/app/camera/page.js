@@ -31,9 +31,16 @@ export default function Camera() {
   }, []);
 
   return (
-    <div>
-      <h1>Camera View</h1>
-      <video ref={videoRef} autoPlay playsInline style={{ width: '100%', height: 'auto' }}></video>
+    <div className="flex justify-center items-center h-screen">
+      <div className="max-w-[1280px] w-full">
+        <h1 className="text-center mb-4">Camera View</h1>
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          className="w-full h-auto"
+        ></video>
+      </div>
     </div>
   );
 }
