@@ -1,14 +1,15 @@
 // src/app/camera/page.js
-
 "use client";
 
 import { useEffect, useRef } from 'react';
+import Layout from '../../components/Layout';
+import styles from '../../styles/Camera.module.css'; // Import the CSS module
 
-export default function Camera() {
+export default function Camera () {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    async function startCamera() {
+    async function startCamera () {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         if (videoRef.current) {
@@ -31,16 +32,11 @@ export default function Camera() {
   }, []);
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="max-w-[1280px] w-full">
-        <h1 className="text-center mb-4">Camera View</h1>
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          className="w-full h-auto"
-        ></video>
+    <Layout>
+      <h1>Camera View</h1>
+      <div className={styles.videoContainer}>
+        <video ref={videoRef} autoPlay playsInline className={styles.video}></video>
       </div>
-    </div>
+    </Layout>
   );
 }
