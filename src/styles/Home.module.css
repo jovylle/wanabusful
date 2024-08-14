@@ -1,0 +1,45 @@
+/* src/styles/Home.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.imageWrapper {
+  margin-top: 1rem;
+}
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+/* src/styles/Home.module.css */
+.link {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.link:hover {
+  color: #ddd; /* Change to a lighter color on hover */
+}
