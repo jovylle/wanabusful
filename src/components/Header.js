@@ -9,7 +9,7 @@ export default function Header () {
           Home
         </Link>
         <Link href="/camera" style={{ color: '#fff', textDecoration: 'none' }}>
-          Camera
+          Camera Test
         </Link>
       </h1>
     </header>
