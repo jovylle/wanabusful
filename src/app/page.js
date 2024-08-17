@@ -1,12 +1,15 @@
 // src/app/page.js
 import Layout from '../components/Layout';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
 
 export default function Home() {
   return (
     <Layout>
       <p>random mini tools site</p>
+      <p>
+        <a href="/camera">Camera test</a>
+        <a href="https://github.com/jovylle/wanabusful">Github public repo link</a>
+        <a href="/">Othe tools to be added</a>
+      </p>
     </Layout>
   );
 }
