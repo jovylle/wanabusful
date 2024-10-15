@@ -8,8 +8,11 @@ export default function Header () {
         <Link href="/" style={{ color: '#fff', textDecoration: 'none', marginRight: '1rem' }}>
           Home
         </Link>
-        <Link href="/camera" style={{ color: '#fff', textDecoration: 'none' }}>
-          Camera Test
+        <Link href="/camera" style={{ color: '#fff', textDecoration: 'none', marginRight: '1rem' }}>
+          Camera
+        </Link>
+        <Link href="/signature" style={{ color: '#fff', textDecoration: 'none', marginRight: '1rem' }}>
+          SignaturePad
         </Link>
       </h1>
     </header>
