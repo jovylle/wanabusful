@@ -1,12 +1,12 @@
 export default function Footer () {
   return (
-    <footer className="bg-gray-900 text-white py-4 text-center">
+    <footer className="dark:bg-gray-900 bg-gray-100 dark:text-white text-black py-4 text-center">
       <div className="container mx-auto">
         {/* About Section */}
         <section className="grid md:grid-cols-2 gap-8 mt-12">
           <div>
             <h2 className="text-2xl font-semibold">About This Site</h2>
-            <p className="mt-4 text-gray-300">
+            <p className="mt-4 dark:text-gray-300 text-black">
               This site is a curated collection of handy online tools, built to showcase modern web development techniques with Next.js and Tailwind CSS.
             </p>
             <br />
@@ -22,7 +22,7 @@ export default function Footer () {
           </div>
           <div>
             <h2 className="text-2xl font-semibold">About Us</h2>
-            <p className="mt-4 text-gray-300">
+            <p className="mt-4 dark:text-gray-300 text-black">
               We are a passionate team of web developers hunting for career opportunities and building dynamic, responsive websites using modern technologies.
             </p>
             <br />
