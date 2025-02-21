@@ -1,20 +1,20 @@
 // src/components/Header.js
-import Link from 'next/link'; // Import Link from Next.js
+import Link from 'next/link';
 
 export default function Header () {
   return (
-    <header style={{ backgroundColor: '#333', color: '#fff', padding: '1rem', textAlign: 'center' }}>
-      <h1>
-        <Link href="/" style={{ color: '#fff', textDecoration: 'none', marginRight: '1rem' }}>
+    <header className="bg-gray-900 text-white py-4">
+      <nav className="container mx-auto flex justify-center space-x-6">
+        <Link href="/" className="hover:text-gray-300">
           Home
         </Link>
-        <Link href="/camera" style={{ color: '#fff', textDecoration: 'none', marginRight: '1rem' }}>
+        <Link href="/camera" className="hover:text-gray-300">
           Camera
         </Link>
-        <Link href="/signature" style={{ color: '#fff', textDecoration: 'none', marginRight: '1rem' }}>
+        <Link href="/signature" className="hover:text-gray-300">
           SignaturePad
         </Link>
-      </h1>
+      </nav>
     </header>
   );
 }

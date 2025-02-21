@@ -4,9 +4,9 @@ import Footer from './Footer';
 
 export default function Layout ({ children }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <main style={{ flex: 1, padding: '2rem', textAlign: 'center' }}>
+      <main className="flex-1 p-8 text-center">
         {children}
       </main>
       <Footer />

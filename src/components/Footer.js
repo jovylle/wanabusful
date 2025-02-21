@@ -1,8 +1,43 @@
-// src/components/Footer.js
 export default function Footer () {
   return (
-    <footer style={{ backgroundColor: '#333', color: '#fff', padding: '1rem', textAlign: 'center' }}>
-      <p>&copy; 2024 Black-Etik</p>
+    <footer className="bg-gray-900 text-white py-4 text-center">
+      <div className="container mx-auto">
+        {/* About Section */}
+        <section className="grid md:grid-cols-2 gap-8 mt-12">
+          <div>
+            <h2 className="text-2xl font-semibold">About This Site</h2>
+            <p className="mt-4 text-gray-300">
+              This site is a curated collection of handy online tools, built to showcase modern web development techniques with Next.js and Tailwind CSS.
+            </p>
+            <br />
+            <p>
+              <a
+                href="https://github.com/jovylle/wanabusful"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub repo link
+              </a>
+            </p>
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold">About Us</h2>
+            <p className="mt-4 text-gray-300">
+              We are a passionate team of web developers hunting for career opportunities and building dynamic, responsive websites using modern technologies.
+            </p>
+            <br />
+            <p>
+              Contributors:
+            </p>
+            <p>
+              &nbsp;<a href="jovylle.com">Jovylle </a>
+            </p>
+          </div>
+        </section>
+      </div>
+      <div className="container mx-auto mt-8">
+        <p>&copy; {new Date().getFullYear()}. All rights reserved.</p>
+      </div>
     </footer>
   );
 }
