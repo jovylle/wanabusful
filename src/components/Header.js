@@ -1,7 +1,7 @@
 // src/components/Header.js
-import Link from 'next/link';
+import Link from "next/link";
 
-export default function Header () {
+export default function Header() {
   return (
     <header className="bg-gray-100 dark:bg-gray-900 dark:text-white py-4">
       <nav className="container mx-auto flex justify-center space-x-6">
@@ -13,6 +13,9 @@ export default function Header () {
         </Link>
         <Link href="/signature" className="hover:text-gray-300">
           SignaturePad
+        </Link>
+        <Link href="/delayed-audio" className="hover:text-gray-300">
+          Delayed Audio
         </Link>
       </nav>
     </header>

@@ -1,11 +1,11 @@
-// filepath: /c:/Users/me/fore/lab/wanabusful/src/app/page.js
-import Link from 'next/link';
-import Layout from '../components/Layout';
+// src/app/page.js
+import Link from "next/link";
+import Layout from "../components/Layout";
 
 export default function Home () {
   return (
     <Layout>
-      <div className="container mx-auto h-full px-4 py-8 ">
+      <div className="container mx-auto h-full px-4 py-8">
         {/* Hero Section */}
         <section className="mb-12">
           <h1 className="text-4xl font-bold text-center mb-8">
@@ -23,6 +23,12 @@ export default function Home () {
               className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
             >
               Signature Pad
+            </Link>
+            <Link
+              href="/delayed-audio"
+              className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition"
+            >
+              Delayed Audio
             </Link>
           </div>
         </section>
