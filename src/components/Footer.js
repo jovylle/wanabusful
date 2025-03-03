@@ -33,7 +33,7 @@ export default function Footer () {
               </a>
             </p>
             {/* Example: Render extra links only when not on Beta or Live */}
-            {isBeta && !isLive && (
+            {!isBeta && isLive && (
               <>
                 <p>
                   <a
@@ -46,7 +46,7 @@ export default function Footer () {
                 </p>
               </>
             )}
-            {!isBeta && isLive && (
+            {isBeta && !isLive && (
               <>
                 <p>
                   <a
