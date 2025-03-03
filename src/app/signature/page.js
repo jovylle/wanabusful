@@ -2,7 +2,6 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Layout from '../../components/Layout';
-import styles from '../../styles/Signature.module.css';
 
 export default function Signature () {
   const canvasRef = useRef(null);
@@ -11,11 +10,11 @@ export default function Signature () {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    // Set the canvas dimensions to match the CSS dimensions
+    // Set the canvas dimensions to match the rendered size
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    ctx.lineWidth = 2; // Set the line width for drawing
-    ctx.lineCap = 'round'; // Set the line cap style
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
   }, []);
 
   const startDrawing = (event) => {
@@ -63,20 +62,39 @@ export default function Signature () {
 
   return (
     <Layout>
-      <h1>Signature Pad</h1>
-      <div className={styles.container}>
+      <h1 className="mt-8 mb-4 text-3xl font-bold text-center">Signature Pad</h1>
+      <div
+        className="flex justify-center items-center mx-auto max-w-screen-xl my-10"
+      >
         <canvas
           ref={canvasRef}
-          className={styles.canvas}
           onMouseDown={startDrawing}
           onMouseMove={draw}
           onMouseUp={stopDrawing}
           onMouseOut={stopDrawing}
+          className="border border-black w-full h-[400px] cursor-crosshair bg-white"
         ></canvas>
       </div>
-      <button className={styles.button} onClick={downloadImage}>Download</button>
-      <button className={styles.button} onClick={copyImage}>Copy</button>
-      <button className={styles.button} onClick={clearCanvas}>Clear</button>
+      <div className="flex justify-center mt-4 space-x-4">
+        <button
+          onClick={downloadImage}
+          className="rounded bg-blue-500 px-4 py-2 font-semibold text-white transition hover:bg-blue-600"
+        >
+          Download
+        </button>
+        <button
+          onClick={copyImage}
+          className="rounded bg-green-500 px-4 py-2 font-semibold text-white transition hover:bg-green-600"
+        >
+          Copy
+        </button>
+        <button
+          onClick={clearCanvas}
+          className="rounded bg-red-500 px-4 py-2 font-semibold text-white transition hover:bg-red-600"
+        >
+          Clear
+        </button>
+      </div>
     </Layout>
   );
 }
