@@ -23,19 +23,19 @@ export default function Footer () {
               showcase modern web development techniques with Next.js and Tailwind CSS.
             </p>
             <br />
-            <p>
+            <p className="underline">
               <a
-                href="https://github.com/jovylle/wanabusful"
+                href="https://github.com/jovylle/wanabusful?tab=readme-ov-file#getting-started-in-contributing-to-this-project"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                GitHub repo link
+                Want to contribute?
               </a>
             </p>
             {/* Example: Render extra links only when not on Beta or Live */}
             {!isBeta && isLive && (
               <>
-                <p>
+                <p className="underline">
                   <a
                     href="http://beta.uft1.com/"
                     target="_blank"
@@ -48,7 +48,7 @@ export default function Footer () {
             )}
             {isBeta && !isLive && (
               <>
-                <p>
+                <p className="underline">
                   <a
                     href="http://uft1.com/"
                     target="_blank"
@@ -66,7 +66,7 @@ export default function Footer () {
               We are a passionate team of web developers hunting for career opportunities and building dynamic, responsive websites using modern technologies.
             </p>
             <br />
-            <p>Contributors:</p>
+            <p className="font-semibold">Contributors:</p>
             <p>
               &nbsp;<a href="https://jovylle.com">Jovylle</a>
             </p>
