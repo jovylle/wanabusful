@@ -30,6 +30,12 @@ export default function Home () {
             >
               Delayed Audio
             </Link>
+            <Link
+              href="/audio-test"
+              className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-orrage-600 transition"
+            >
+              Audio Left/Right Speaker Test
+            </Link>
           </div>
         </section>
       </div>
