@@ -6,7 +6,7 @@ Thank you for your interest in contributing to this project! Follow the steps be
 
 First, fork the repository by clicking the following link:
 
-[**Fork Wanabusful**](https://github.com/OhWhatsThis/wanabusful/fork)
+[**https://github.com/OhWhatsThis/wanabusful/fork**](https://github.com/OhWhatsThis/wanabusful/fork)
 
 ### 2. Clone Your Fork
 
