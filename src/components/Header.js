@@ -17,6 +17,9 @@ export default function Header() {
         <Link href="/delayed-audio" className="hover:text-gray-300">
           Delayed Audio
         </Link>
+        <Link href="/delayed-audio" className="hover:text-gray-300">
+          Left/Right Speaker Test
+        </Link>
       </nav>
     </header>
   );
