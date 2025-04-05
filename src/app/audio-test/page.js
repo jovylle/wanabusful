@@ -39,9 +39,7 @@ export default function AudioTest () {
     <Layout>
       <div className="container mx-auto py-10 px-4">
         <h1 className="text-3xl font-bold mb-6">Audio Speaker Test</h1>
-        <p className="mb-6">
-          Test your left and right speakers to ensure they're working correctly.
-        </p>
+        <p>Test your left and right speakers to ensure they&rsquo;re working correctly.</p>
 
         {/* Hidden audio elements */}
         <audio
