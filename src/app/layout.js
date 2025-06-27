@@ -30,18 +30,21 @@ export default function RootLayout ({ children }) {
         {children}
 
         {/* ✅ Inject chatbot config + script here */}
-        <Script id="chat-config" strategy="afterInteractive">
-          {`
-            {
-              "chatbot": {
-                "siteID": "uft1-tools",
-                "theme": "light",
-                "position": "bottom-right",
-                "instructions": "You're the assistant for UFT1 Tools. Help users understand the tools and where to find things."
-              }
-            }
-          `}
-        </Script>
+        <Script
+          id="chat-config"
+          type="application/json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+                siteID: "uft1-tools",
+                theme: "light",
+                position: "bottom-right",
+                instructions:
+                  "You're the assistant for UFT1 Tools, a collection of online utilities including camera testers, left/right audio checkers, signature pads, and delayed audio playback tools. Help users understand how to use the tools and answer basic questions. New tools are planned and coming soon. The site was built by Jovylle Bermudez, the main author — learn more at jovylle.com.",
+            }),
+          }}
+        />
+
         <Script
           src="https://chat-widget.jovylle.com/embed.js"
           strategy="afterInteractive"
