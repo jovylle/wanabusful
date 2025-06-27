@@ -1,21 +1,20 @@
 import { Inter } from "next/font/google";
-import Head from "next/head";
+import Script from "next/script"; // ✅ import this for chatbot
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
+const metadata = {
   title: "UFT1 Tools - Your Hub for Online Utilities and Tools",
   description: "Explore a wide range of online utilities and tools at UFT1 Tools. From signature pads to camera testers, find everything you need to enhance your digital experience.",
 };
 
-// Use the production URL for meta tags
-const productionUrl = 'https://tools.uft1.com';
+const productionUrl = "https://tools.uft1.com";
 
 export default function RootLayout ({ children }) {
   return (
     <html lang="en">
-      <Head>
+      <head>
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
         <meta property="og:title" content={metadata.title} />
@@ -26,8 +25,29 @@ export default function RootLayout ({ children }) {
         <meta name="twitter:title" content={metadata.title} />
         <meta name="twitter:description" content={metadata.description} />
         <meta name="twitter:image" content={`${productionUrl}/android-chrome-512x512.png`} />
-      </Head>
-      <body className={inter.className}>{children}</body>
+      </head>
+      <body className={inter.className}>
+        {children}
+
+        {/* ✅ Inject chatbot config + script here */}
+        <Script id="chat-config" strategy="afterInteractive">
+          {`
+            {
+              "chatbot": {
+                "siteID": "uft1-tools",
+                "theme": "light",
+                "position": "bottom-right",
+                "instructions": "You're the assistant for UFT1 Tools. Help users understand the tools and where to find things."
+              }
+            }
+          `}
+        </Script>
+        <Script
+          src="https://chat-widget.jovylle.com/embed.js"
+          strategy="afterInteractive"
+          async
+        />
+      </body>
     </html>
   );
 }
