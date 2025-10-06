@@ -48,8 +48,8 @@ export default function Header() {
           <Link href="/delayed-audio" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700">
             Delayed Audio
           </Link>
-          <Link href="/speaker-test" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700">
-            Left/Right Speaker Test
+          <Link href="/audio-test" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700">
+            Audio Test
           </Link>
         </div>
         <div className="hidden lg:flex lg:items-center lg:justify-center lg:space-x-6 w-full">
@@ -65,8 +65,8 @@ export default function Header() {
           <Link href="/delayed-audio" className="hover:text-gray-300">
             Delayed Audio
           </Link>
-          <Link href="/speaker-test" className="hover:text-gray-300">
-            Left/Right Speaker Test
+          <Link href="/audio-test" className="hover:text-gray-300">
+            Audio Test
           </Link>
         </div>
       </nav>
