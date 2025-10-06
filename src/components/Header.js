@@ -11,7 +11,9 @@ export default function Header() {
         <div className="block lg:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="text-gray-900 dark:text-white focus:outline-none"
+            className="text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
           >
             <svg
               className="w-6 h-6"
@@ -19,12 +21,13 @@ export default function Header() {
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M4 6h16M4 12h16m-7 6h7"
+                d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}
               />
             </svg>
           </button>
@@ -34,38 +37,38 @@ export default function Header() {
             isOpen ? "block" : "hidden"
           } lg:hidden absolute top-16 left-0 w-full bg-gray-100 dark:bg-gray-900 transition-all duration-300 ease-in-out transform ${
             isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
-          } z-10`}
+          } z-10 shadow-lg`}
         >
-          <Link href="/" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700">
+          <Link href="/" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 focus:bg-gray-200 dark:focus:bg-gray-700 focus:outline-none">
             Home
           </Link>
-          <Link href="/camera" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700">
+          <Link href="/camera" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 focus:bg-gray-200 dark:focus:bg-gray-700 focus:outline-none">
             Camera
           </Link>
-          <Link href="/signature" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700">
+          <Link href="/signature" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 focus:bg-gray-200 dark:focus:bg-gray-700 focus:outline-none">
             SignaturePad
           </Link>
-          <Link href="/delayed-audio" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700">
+          <Link href="/delayed-audio" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 focus:bg-gray-200 dark:focus:bg-gray-700 focus:outline-none">
             Delayed Audio
           </Link>
-          <Link href="/audio-test" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700">
+          <Link href="/audio-test" className="block py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 focus:bg-gray-200 dark:focus:bg-gray-700 focus:outline-none">
             Audio Test
           </Link>
         </div>
         <div className="hidden lg:flex lg:items-center lg:justify-center lg:space-x-6 w-full">
-          <Link href="/" className="hover:text-gray-300">
+          <Link href="/" className="hover:text-gray-300 focus:text-gray-300 focus:outline-none focus:underline">
             Home
           </Link>
-          <Link href="/camera" className="hover:text-gray-300">
+          <Link href="/camera" className="hover:text-gray-300 focus:text-gray-300 focus:outline-none focus:underline">
             Camera
           </Link>
-          <Link href="/signature" className="hover:text-gray-300">
+          <Link href="/signature" className="hover:text-gray-300 focus:text-gray-300 focus:outline-none focus:underline">
             SignaturePad
           </Link>
-          <Link href="/delayed-audio" className="hover:text-gray-300">
+          <Link href="/delayed-audio" className="hover:text-gray-300 focus:text-gray-300 focus:outline-none focus:underline">
             Delayed Audio
           </Link>
-          <Link href="/audio-test" className="hover:text-gray-300">
+          <Link href="/audio-test" className="hover:text-gray-300 focus:text-gray-300 focus:outline-none focus:underline">
             Audio Test
           </Link>
         </div>
