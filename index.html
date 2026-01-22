@@ -180,6 +180,45 @@
         font-size: 0.85rem;
         color: #bfdbfe;
       }
+
+    .info-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top: 32px;
+    }
+
+    .info-card {
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: rgba(30, 41, 59, 0.9);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    }
+
+    .info-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      color: #f8fafc;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: #cbd5f5;
+      line-height: 1.6;
+    }
+
+    .info-card ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    .info-card a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
     </style>
   </head>
   <body>
@@ -241,6 +280,40 @@
           <p>
             Want an API-backed tool? Create another route inside <code>/othertools</code>
             and link it from here.
+          </p>
+        </article>
+      </section>
+
+      <section class="info-grid">
+        <article class="info-card">
+          <h3>About This Site</h3>
+          <p>
+            This site is a curated collection of handy online tools, built to showcase modern web development
+            techniques with Next.js and Tailwind CSS. Want to contribute? Reach out via the contact info below.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <h3>About Us</h3>
+          <p>
+            We are a passionate team of web developers hunting for career opportunities and building dynamic,
+            responsive websites using modern technologies.
+          </p>
+          <ul>
+            <li>Jovylle</li>
+            <li>ByteSurfer23</li>
+            <li>Maynard Rosales</li>
+          </ul>
+        </article>
+
+        <article class="info-card">
+          <h3>Contact</h3>
+          <p>
+            Have questions or feedback? Reach out to us. We value your input and strive to improve our services
+            based on your suggestions.
+          </p>
+          <p>
+            <a href="mailto:support@uft1.com">support@uft1.com</a>
           </p>
         </article>
       </section>
