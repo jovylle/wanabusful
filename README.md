@@ -1,83 +1,42 @@
-## Contributing to Wanabusful
+## Wanabusful mini projects
 
-Thank you for your interest in contributing to this project! Follow the steps below to get started.
+Wanabusful now exposes a single static landing page at the repository root (`index.html`),
+because Netlify can point directly to this file. That page links to:
 
-### 1. Fork the Repository
+- a standalone CSV→JSON converter served from `csv-to-json/index.html`
+- the richer Next.js tool suite inside the renamed `othertools/` folder (formerly `acoolprojectaah`)
 
-First, fork the repository by clicking the following link:
+Each project can live in its own folder so heavier apps can evolve independently without dragging down the simple hub.
 
-[**https://github.com/jovylle/wanabusful/fork**](https://github.com/jovylle/wanabusful/fork)
+## Repository layout
 
-### 2. Clone Your Fork
+- `index.html` – the lightweight hub that lists every mini project (links, descriptions, CTA badges).
+- `csv-to-json/` – the Dynamo CSV parser running as a self-contained HTML + JS toolpath.
+- `othertools/` – the Next.js workspace that hosts the camera test, signature pad, delayed audio, and audio channel tests. Treat this folder as a standalone Next.js app.
 
-After forking the repository, clone your forked version to your local machine:
+## Developing the Next.js tools
 
-```bash
-# Replace "your-username" with your GitHub username
-git clone https://github.com/your-username/wanabusful.git
-cd wanabusful
-```
+1. `cd othertools`
+2. `npm install` (or `pnpm install` / `yarn install` if you prefer).
+3. `npm run dev` (starts the Next.js dev server on `http://localhost:3000` by default).
+4. Edit pages under `othertools/src/app/` and run the usual testing/linting workflows from inside that folder.
 
-### 3. Install Dependencies
+When you’re ready to deploy the Next.js suite, use the same workflow you would for any Next.js project located at `othertools/`.
 
-Run the following command to install project dependencies:
+## Contributing
 
-```bash
-npm install
-```
+1. Fork the repository, clone your fork, and `cd wanabusful`.
+2. `git checkout -b your-feature-branch`.
+3. Work inside either the root (for static HTML edits) or the `othertools/` app (for React/Next.js changes).
+4. Run linters/tests relevant to the folder you touched.
+5. `git add ...`, `git commit -m "Describe your change"`, and `git push origin your-feature-branch`.
+6. Open a pull request against the main repo and describe which folders/tools your changes affect.
 
-### 4. Start the Development Server
+## Additional notes
 
-To start the project in development mode, run:
-
-```bash
-npm run dev
-```
-
-This will start a local development server. Open your browser and visit:
-
-[http://localhost:3000](http://localhost:3000)
-
-Or check the terminal output for the correct local URL.
-
-### 5. Create a New Branch
-
-Before making any changes, create a new branch:
-
-```bash
-git checkout -b your-feature-branch
-```
-
-### 6. Make Your Changes
-
-- Follow the project's coding standards.
-- Test your changes before committing.
-
-### 7. Commit and Push Changes
-
-```bash
-git add .
-git commit -m "Describe your changes here"
-git push origin your-feature-branch
-```
-
-### 8. Open a Pull Request
-
-- Go to the original repository: [Wanabusful](https://github.com/OhWhatsThis/wanabusful)
-- Click on **Pull Requests** > **New Pull Request**
-- Select your fork and branch, then submit the pull request.
-
-### 9. Wait for Review
-
-Your pull request will be reviewed. Make any requested changes and update your pull request if needed.
-
----
-
-### Additional Notes
-
-- Ensure your changes do not break existing functionality.
-- Follow [Next.js](https://nextjs.org/) best practices.
-- If you encounter any issues, feel free to open an [issue](https://github.com/OhWhatsThis/wanabusful/issues).
+- Keep root-level assets (static HTML, root CSS, etc.) small so the landing page loads quickly.
+- Use `othertools/` for more complex interactions—it already contains its own `package.json`, `.eslintrc.json`, and Tailwind setup.
+- If you add another static tool, place it in a new folder at the root level and link it from `index.html`.
 
 Happy coding! 🚀
 
