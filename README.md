@@ -38,6 +38,7 @@ When you’re ready to deploy the Next.js suite, use the same workflow you would
 - Keep root-level assets (static HTML, root CSS, etc.) small so the landing page loads quickly.
 - Use `othertools/` for more complex interactions—it already contains its own `package.json`, `.eslintrc.json`, and Tailwind setup.
 - If you add another static tool, place it in a new folder at the root level and link it from `index.html`.
+- Contributors: Jovylle, ByteSurfer23, Maynard Rosales.
 - When updating the runtime tools, redeploy `https://other.uft1.com/` so the hosted routes stay in sync with what’s listed on this landing page (see `https://other.uft1.com/camera` as proof-of-deployment).
 
 Happy coding! 🚀
