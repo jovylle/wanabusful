@@ -13,6 +13,7 @@ Each project can live in its own folder so heavier apps can evolve independently
 - `index.html` – the lightweight hub that lists every mini project (links, descriptions, CTA badges).
 - `csv-to-json/` – the Dynamo CSV parser running as a self-contained HTML + JS toolpath.
 - `othertools/` – the Next.js workspace that hosts the camera test, signature pad, delayed audio, and audio channel tests. Treat this folder as a standalone Next.js app.
+- `https://other.uft1.com/` – the deployed runtime experience. Every Next.js route (camera, signature, delayed audio, audio test) mirrors what is hosted at that URL, so point your Netlify/hosting config there when you need a full runtime.
 
 ## Developing the Next.js tools
 
@@ -37,6 +38,7 @@ When you’re ready to deploy the Next.js suite, use the same workflow you would
 - Keep root-level assets (static HTML, root CSS, etc.) small so the landing page loads quickly.
 - Use `othertools/` for more complex interactions—it already contains its own `package.json`, `.eslintrc.json`, and Tailwind setup.
 - If you add another static tool, place it in a new folder at the root level and link it from `index.html`.
+- When updating the runtime tools, redeploy `https://other.uft1.com/` so the hosted routes stay in sync with what’s listed on this landing page (see `https://other.uft1.com/camera` as proof-of-deployment).
 
 Happy coding! 🚀
 
