@@ -12,6 +12,8 @@ because Netlify can point directly to this file. That page links to:
   - `uuid/` – UUID v4 generator
   - `markdown-preview/` – Live Markdown preview (marked.js)
   - `timestamp/` – Unix timestamp ↔ human date converter
+  - `color-converter/` – Hex ↔ RGB color converter with preview
+  - `slug-generator/` – Title to URL slug (lowercase, hyphens)
 - the richer Next.js tool suite inside `othertools/` (camera, signature, audio, etc.)
 
 Each project can live in its own folder so heavier apps can evolve independently without dragging down the simple hub.
@@ -19,7 +21,7 @@ Each project can live in its own folder so heavier apps can evolve independently
 ## Repository layout
 
 - `index.html` – the lightweight hub that lists every mini project (links, descriptions, CTA badges).
-- `csv-to-json/`, `base64/`, `json-formatter/`, `lorem/`, `url-encode/`, `uuid/`, `markdown-preview/`, `timestamp/` – self-contained HTML + JS tools (no build step).
+- `csv-to-json/`, `base64/`, `json-formatter/`, `lorem/`, `url-encode/`, `uuid/`, `markdown-preview/`, `timestamp/`, `color-converter/`, `slug-generator/` – self-contained HTML + JS tools (no build step).
 - `othertools/` – the Next.js workspace that hosts the camera test, signature pad, delayed audio, and audio channel tests. Treat this folder as a standalone Next.js app.
 - `https://other.uft1.com/` – the deployed runtime experience. Every Next.js route (camera, signature, delayed audio, audio test) mirrors what is hosted at that URL, so point your Netlify/hosting config there when you need a full runtime.
 

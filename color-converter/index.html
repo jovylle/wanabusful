@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>Color Converter</title>
+    <meta name="description" content="Convert between hex and RGB color values. Preview the color." />
+    <meta name="keywords" content="color, hex, rgb, converter, picker" />
+    <meta name="author" content="Jovylle B. Bermudez" />
+    <style>
+      :root { font-family: "Space Grotesk", system-ui, sans-serif; background-color: #04070f; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: #020617; }
+      .page { max-width: 1100px; margin: 0 auto; padding: 48px 24px 72px; }
+      .hero { margin-bottom: 32px; }
+      .eyebrow { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.8rem; color: #94a3b8; margin: 0 0 10px; }
+      .hero h1 { margin: 0; font-size: clamp(2.5rem, 4vw, 3.2rem); line-height: 1.1; color: #f8fafc; }
+      .lede { margin-top: 12px; color: #cbd5f5; max-width: 720px; line-height: 1.6; }
+      .hero-links { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+      .hero-links a { color: #38bdf8; font-weight: 500; text-decoration: none; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+      .card { border-radius: 20px; padding: 28px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(148, 163, 184, 0.3); box-shadow: 0 20px 40px rgba(2, 6, 23, 0.65); }
+      .card label { font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; display: block; margin-bottom: 6px; }
+      input[type="text"] { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(148, 163, 184, 0.4); background: rgba(15, 23, 42, 0.9); color: #e2e8f0; font-family: inherit; font-size: 1rem; }
+      .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+      button { padding: 12px 20px; border-radius: 14px; border: none; font-size: 0.95rem; font-weight: 600; color: #fff; cursor: pointer; font-family: inherit; }
+      button.primary { background: linear-gradient(135deg, #38bdf8, #6366f1); }
+      button.secondary { background: rgba(148, 163, 184, 0.25); border: 1px solid rgba(148, 163, 184, 0.4); color: #e2e8f0; }
+      button:hover { opacity: 0.95; }
+      .output-box { margin-top: 16px; padding: 14px; border-radius: 10px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(148, 163, 184, 0.25); color: #e2e8f0; }
+      .preview { margin-top: 12px; height: 48px; border-radius: 10px; border: 1px solid rgba(148, 163, 184, 0.3); }
+      .notes h2 { margin-top: 0; font-size: 1.5rem; color: #f8fafc; }
+      .notes p, .notes ul { color: #cbd5f5; line-height: 1.6; }
+      .notes ul { padding-left: 20px; }
+      .notes a { color: #38bdf8; }
+      code { background: rgba(59, 130, 246, 0.15); padding: 2px 6px; border-radius: 6px; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Hex &amp; RGB</p>
+        <h1>Color converter</h1>
+        <p class="lede">
+          Convert between hex (<code>#rrggbb</code>) and RGB (<code>r, g, b</code>). Optional 3-digit hex. Preview updates on convert.
+        </p>
+        <div class="hero-links">
+          <a href="../">← Back to hub</a>
+          <a href="https://github.com/jovylle/wanabusful/tree/main/color-converter" target="_blank" rel="noreferrer">View source</a>
+        </div>
+      </header>
+
+      <section class="grid">
+        <div class="card">
+          <label for="input">Hex or RGB (e.g. #38bdf8 or 56, 189, 248)</label>
+          <input type="text" id="input" placeholder="#38bdf8 or 56, 189, 248" />
+          <div class="btn-row">
+            <button class="primary" onclick="hexToRgb()">Hex → RGB</button>
+            <button class="primary" onclick="rgbToHex()">RGB → Hex</button>
+          </div>
+          <label style="margin-top: 16px;">Result</label>
+          <div id="output" class="output-box">Result will appear here.</div>
+          <div id="preview" class="preview" aria-hidden="true"></div>
+          <div class="btn-row" style="margin-top: 10px;">
+            <button class="secondary" onclick="copyResult()">Copy result</button>
+          </div>
+        </div>
+
+        <aside class="card notes">
+          <h2>Usage</h2>
+          <p>
+            <strong>Hex:</strong> <code>#fff</code>, <code>#ffffff</code>, or <code>fff</code> (hash optional). <strong>RGB:</strong> three numbers 0–255, comma- or space-separated.
+          </p>
+          <ul>
+            <li>All in browser.</li>
+          </ul>
+        </aside>
+      </section>
+    </main>
+
+    <script>
+      const inputEl = document.getElementById('input');
+      const outputEl = document.getElementById('output');
+      const previewEl = document.getElementById('preview');
+      let lastResult = '';
+
+      function parseHex(s) {
+        s = s.replace(/^#/, '').trim();
+        if (/^[0-9a-fA-F]{3}$/.test(s)) s = s[0]+s[0]+s[1]+s[1]+s[2]+s[2];
+        if (!/^[0-9a-fA-F]{6}$/.test(s)) return null;
+        return { r: parseInt(s.slice(0,2), 16), g: parseInt(s.slice(2,4), 16), b: parseInt(s.slice(4,6), 16) };
+      }
+      function parseRgb(s) {
+        const m = s.match(/\d+/g);
+        if (!m || m.length !== 3) return null;
+        const r = parseInt(m[0],10), g = parseInt(m[1],10), b = parseInt(m[2],10);
+        if ([r,g,b].some(function(n){ return n < 0 || n > 255; })) return null;
+        return { r, g, b };
+      }
+      function setPreview(rgb) {
+        if (!rgb) { previewEl.style.background = 'transparent'; return; }
+        previewEl.style.background = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
+      }
+
+      function hexToRgb() {
+        const rgb = parseHex(inputEl.value.trim());
+        if (!rgb) { outputEl.textContent = 'Invalid hex. Use #fff or #ffffff.'; setPreview(null); return; }
+        lastResult = 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')';
+        outputEl.textContent = lastResult;
+        setPreview(rgb);
+      }
+
+      function rgbToHex() {
+        const rgb = parseRgb(inputEl.value.trim());
+        if (!rgb) { outputEl.textContent = 'Invalid RGB. Use three numbers 0–255, e.g. 56, 189, 248.'; setPreview(null); return; }
+        const h = '#' + [rgb.r, rgb.g, rgb.b].map(function(n){ return n.toString(16).padStart(2,'0'); }).join('');
+        lastResult = h;
+        outputEl.textContent = lastResult;
+        setPreview(rgb);
+      }
+
+      function copyResult() {
+        if (!lastResult) return;
+        navigator.clipboard.writeText(lastResult).then(
+          function () { if (window.alert) window.alert('Copied.'); },
+          function () { if (window.alert) window.alert('Copy failed.'); }
+        );
+      }
+    </script>
+  </body>
+</html>
