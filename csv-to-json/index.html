@@ -93,6 +93,20 @@
         margin-bottom: 6px;
       }
 
+      .converter .drop-zone {
+        border: 2px dashed rgba(148, 163, 184, 0.4);
+        border-radius: 14px;
+        padding: 16px;
+        text-align: center;
+        color: #94a3b8;
+        margin-bottom: 12px;
+        transition: border-color 0.2s, background 0.2s;
+      }
+      .converter .drop-zone.dragover { border-color: #38bdf8; background: rgba(56, 189, 248, 0.08); }
+      .converter .drop-zone input { display: none; }
+      .converter .file-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+      .converter .file-actions button.secondary { margin: 0; width: auto; padding: 10px 18px; }
+
       textarea {
         width: 100%;
         min-height: 200px;
@@ -193,10 +207,13 @@
       <section class="grid">
         <div class="card converter">
           <div class="field">
-            <label for="csv">Paste Dynamo-exported CSV</label>
+            <label for="csv">Paste or drop Dynamo-exported CSV</label>
+            <div id="dropZone" class="drop-zone" role="button" tabindex="0" aria-label="Drop CSV file or click to choose">
+              <input type="file" id="fileInput" accept=".csv,text/csv,text/plain" aria-label="Choose CSV file" />
+              <span id="dropLabel">Drop a CSV file here or click to choose</span>
+            </div>
             <textarea id="csv" placeholder="clientId,clientName,..."></textarea>
           </div>
-
           <button onclick="convert()">Normalize to JSON</button>
 
           <div class="field">
@@ -277,6 +294,47 @@
     a.click();
     URL.revokeObjectURL(url);
   }
+
+  function loadCsvText(text) {
+    document.getElementById("csv").value = text;
+    convert();
+  }
+
+  (function setupFileDrop() {
+    const dropZone = document.getElementById("dropZone");
+    const fileInput = document.getElementById("fileInput");
+    const label = document.getElementById("dropLabel");
+
+    dropZone.addEventListener("click", function () { fileInput.click(); });
+
+    dropZone.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      dropZone.classList.add("dragover");
+    });
+    dropZone.addEventListener("dragleave", function () {
+      dropZone.classList.remove("dragover");
+    });
+    dropZone.addEventListener("drop", function (e) {
+      e.preventDefault();
+      dropZone.classList.remove("dragover");
+      const file = e.dataTransfer && e.dataTransfer.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function () { loadCsvText(reader.result); };
+      reader.readAsText(file, "UTF-8");
+      label.textContent = "Loaded: " + file.name;
+    });
+
+    fileInput.addEventListener("change", function () {
+      const file = fileInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function () { loadCsvText(reader.result); };
+      reader.readAsText(file, "UTF-8");
+      label.textContent = "Loaded: " + file.name;
+      fileInput.value = "";
+    });
+  })();
 
   function normalizeCell(value) {
     if (value == null) return null;
