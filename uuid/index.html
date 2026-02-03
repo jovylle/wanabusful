@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>UUID Generator</title>
+    <meta name="description" content="Generate random UUIDs (v4). Copy one or many. No server, no tracking." />
+    <meta name="keywords" content="UUID, GUID, generator, v4, random" />
+    <meta name="author" content="Jovylle B. Bermudez" />
+    <style>
+      :root { font-family: "Space Grotesk", system-ui, sans-serif; background-color: #04070f; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: #020617; }
+      .page { max-width: 1100px; margin: 0 auto; padding: 48px 24px 72px; }
+      .hero { margin-bottom: 32px; }
+      .eyebrow { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.8rem; color: #94a3b8; margin: 0 0 10px; }
+      .hero h1 { margin: 0; font-size: clamp(2.5rem, 4vw, 3.2rem); line-height: 1.1; color: #f8fafc; }
+      .lede { margin-top: 12px; color: #cbd5f5; max-width: 720px; line-height: 1.6; }
+      .hero-links { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+      .hero-links a { color: #38bdf8; font-weight: 500; text-decoration: none; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+      .card { border-radius: 20px; padding: 28px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(148, 163, 184, 0.3); box-shadow: 0 20px 40px rgba(2, 6, 23, 0.65); }
+      .card label { font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; display: block; margin-bottom: 6px; }
+      .opts { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+      .opts input { padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(148, 163, 184, 0.4); background: rgba(15, 23, 42, 0.9); color: #e2e8f0; font-family: inherit; width: 80px; }
+      textarea { width: 100%; min-height: 180px; border-radius: 14px; border: 1px solid rgba(226, 232, 240, 0.25); background: rgba(15, 23, 42, 0.9); color: #e2e8f0; font-family: "Space Grotesk", system-ui, monospace; padding: 14px; resize: vertical; font-size: 0.9rem; }
+      .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+      button { padding: 12px 20px; border-radius: 14px; border: none; font-size: 0.95rem; font-weight: 600; color: #fff; cursor: pointer; font-family: inherit; }
+      button.primary { background: linear-gradient(135deg, #38bdf8, #6366f1); }
+      button.secondary { background: rgba(148, 163, 184, 0.25); border: 1px solid rgba(148, 163, 184, 0.4); color: #e2e8f0; }
+      button:hover { opacity: 0.95; }
+      .notes h2 { margin-top: 0; font-size: 1.5rem; color: #f8fafc; }
+      .notes p, .notes ul { color: #cbd5f5; line-height: 1.6; }
+      .notes ul { padding-left: 20px; }
+      .notes a { color: #38bdf8; }
+      code { background: rgba(59, 130, 246, 0.15); padding: 2px 6px; border-radius: 6px; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Random IDs</p>
+        <h1>UUID generator</h1>
+        <p class="lede">
+          Generate random UUIDs (v4). Choose how many, then copy. Uses <code>crypto.randomUUID()</code> when available, fallback to <code>crypto.getRandomValues()</code>.
+        </p>
+        <div class="hero-links">
+          <a href="../">← Back to hub</a>
+          <a href="https://github.com/jovylle/wanabusful/tree/main/uuid" target="_blank" rel="noreferrer">View source</a>
+        </div>
+      </header>
+
+      <section class="grid">
+        <div class="card">
+          <label>How many UUIDs?</label>
+          <div class="opts">
+            <input type="number" id="count" min="1" max="100" value="5" />
+          </div>
+          <label for="output">Generated UUIDs</label>
+          <textarea id="output" readonly placeholder="Click Generate…"></textarea>
+          <div class="btn-row">
+            <button class="primary" onclick="generate()">Generate</button>
+            <button class="secondary" onclick="copyOutput()">Copy all</button>
+          </div>
+        </div>
+
+        <aside class="card notes">
+          <h2>About</h2>
+          <p>
+            UUID v4 is 122 bits of randomness in the form <code>xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</code> (hex). Safe for IDs, tokens, and nonces.
+          </p>
+          <ul>
+            <li>Count: 1–100 per click.</li>
+            <li>One UUID per line in the output.</li>
+          </ul>
+        </aside>
+      </section>
+    </main>
+
+    <script>
+      function randomUUID() {
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+        const buf = new Uint8Array(16);
+        crypto.getRandomValues(buf);
+        buf[6] = (buf[6] & 0x0f) | 0x40;
+        buf[8] = (buf[8] & 0x3f) | 0x80;
+        const hex = Array.from(buf).map(b => b.toString(16).padStart(2, '0')).join('');
+        return [hex.slice(0, 8), hex.slice(8, 12), hex.slice(12, 16), hex.slice(16, 20), hex.slice(20)].join('-');
+      }
+
+      const outputEl = document.getElementById('output');
+      const countEl = document.getElementById('count');
+
+      function generate() {
+        const count = Math.max(1, Math.min(100, parseInt(countEl.value, 10) || 5));
+        const list = [];
+        for (let i = 0; i < count; i++) list.push(randomUUID());
+        outputEl.value = list.join('\n');
+      }
+
+      function copyOutput() {
+        const val = outputEl.value.trim();
+        if (!val) return;
+        navigator.clipboard.writeText(val).then(
+          () => alert('Copied to clipboard.'),
+          () => alert('Copy failed.')
+        );
+      }
+    </script>
+  </body>
+</html>

@@ -61,6 +61,9 @@ export default function Footer() {
             <p>
               <a href="https://github.com/ByteSurfer23" className="underline">ByteSurfer23</a>
             </p>
+            <p>
+              <a href="https://github.com/MaynardRosales" className="underline">Maynard Rosales</a>
+            </p>
           </div>
           
           {/* Contact or Extra Info */}

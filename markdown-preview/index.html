@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>Markdown Preview</title>
+    <meta name="description" content="Preview Markdown as HTML in real time. Write on the left, see rendered output on the right." />
+    <meta name="keywords" content="Markdown, preview, render, HTML" />
+    <meta name="author" content="Jovylle B. Bermudez" />
+    <style>
+      :root { font-family: "Space Grotesk", system-ui, sans-serif; background-color: #04070f; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: #020617; }
+      .page { max-width: 1200px; margin: 0 auto; padding: 48px 24px 72px; }
+      .hero { margin-bottom: 28px; }
+      .eyebrow { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.8rem; color: #94a3b8; margin: 0 0 10px; }
+      .hero h1 { margin: 0; font-size: clamp(2.5rem, 4vw, 3.2rem); line-height: 1.1; color: #f8fafc; }
+      .lede { margin-top: 12px; color: #cbd5f5; max-width: 720px; line-height: 1.6; }
+      .hero-links { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+      .hero-links a { color: #38bdf8; font-weight: 500; text-decoration: none; }
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+      @media (max-width: 768px) { .split { grid-template-columns: 1fr; } }
+      .card { border-radius: 20px; padding: 24px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(148, 163, 184, 0.3); box-shadow: 0 20px 40px rgba(2, 6, 23, 0.65); }
+      .card label { font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; display: block; margin-bottom: 8px; }
+      textarea { width: 100%; min-height: 320px; border-radius: 14px; border: 1px solid rgba(226, 232, 240, 0.25); background: rgba(15, 23, 42, 0.9); color: #e2e8f0; font-family: "Space Grotesk", system-ui, monospace; padding: 14px; resize: vertical; font-size: 0.9rem; line-height: 1.5; }
+      .preview { width: 100%; min-height: 320px; border-radius: 14px; border: 1px solid rgba(226, 232, 240, 0.25); background: rgba(15, 23, 42, 0.9); color: #e2e8f0; padding: 14px; overflow: auto; font-size: 0.95rem; line-height: 1.6; }
+      .preview h1, .preview h2, .preview h3 { margin-top: 1em; margin-bottom: 0.5em; color: #f8fafc; }
+      .preview h1 { font-size: 1.5rem; }
+      .preview h2 { font-size: 1.25rem; }
+      .preview code { background: rgba(59, 130, 246, 0.15); padding: 2px 6px; border-radius: 6px; font-size: 0.9em; }
+      .preview pre { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; overflow-x: auto; }
+      .preview pre code { background: none; padding: 0; }
+      .preview blockquote { border-left: 4px solid #38bdf8; margin: 0.5em 0; padding-left: 1em; color: #94a3b8; }
+      .preview ul, .preview ol { padding-left: 1.5em; }
+      .preview a { color: #38bdf8; }
+      .notes { margin-top: 24px; }
+      .notes h2 { margin-top: 0; font-size: 1.5rem; color: #f8fafc; }
+      .notes p, .notes ul { color: #cbd5f5; line-height: 1.6; }
+      .notes ul { padding-left: 20px; }
+      .notes a { color: #38bdf8; }
+      code { background: rgba(59, 130, 246, 0.15); padding: 2px 6px; border-radius: 6px; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Live render</p>
+        <h1>Markdown preview</h1>
+        <p class="lede">
+          Type or paste Markdown on the left; the right panel shows the rendered HTML. Uses marked.js. All processing is in the browser.
+        </p>
+        <div class="hero-links">
+          <a href="../">← Back to hub</a>
+          <a href="https://github.com/jovylle/wanabusful/tree/main/markdown-preview" target="_blank" rel="noreferrer">View source</a>
+        </div>
+      </header>
+
+      <section class="split">
+        <div class="card">
+          <label for="input">Markdown</label>
+          <textarea id="input" placeholder="# Hello&#10;&#10;**Bold** and *italic*.&#10;&#10;- List&#10;- Item"># Hello
+
+**Bold** and *italic*.
+
+- List item one
+- List item two
+
+[Link](https://example.com)
+
+```js
+console.log("code block");
+```</textarea>
+        </div>
+        <div class="card">
+          <label>Preview</label>
+          <div id="preview" class="preview"></div>
+        </div>
+      </section>
+
+      <aside class="card notes">
+        <h2>Supported</h2>
+        <p>
+          Headers, bold/italic, links, images, code and code blocks, blockquotes, ordered and unordered lists, and more via <a href="https://marked.js.org/" target="_blank" rel="noreferrer">marked.js</a>.
+        </p>
+      </aside>
+    </main>
+
+    <script>
+      const inputEl = document.getElementById('input');
+      const previewEl = document.getElementById('preview');
+
+      marked.setOptions({ gfm: true, breaks: true });
+
+      function update() {
+        const raw = inputEl.value;
+        try {
+          previewEl.innerHTML = marked.parse(raw || '');
+        } catch (e) {
+          previewEl.innerHTML = '<p class="error">Parse error: ' + (e.message || 'unknown') + '</p>';
+        }
+      }
+
+      inputEl.addEventListener('input', update);
+      update();
+    </script>
+  </body>
+</html>

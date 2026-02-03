@@ -118,6 +118,25 @@
         cursor: pointer;
       }
 
+      .output-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      button.secondary {
+        margin: 0;
+        width: auto;
+        padding: 10px 18px;
+        background: rgba(148, 163, 184, 0.25);
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        color: #e2e8f0;
+      }
+
+      button.secondary:hover {
+        background: rgba(148, 163, 184, 0.4);
+      }
+
       .notes h2 {
         margin-top: 0;
         font-size: 1.5rem;
@@ -165,7 +184,8 @@
           what you just uploaded.
         </p>
         <div class="hero-links">
-          <a href="https://github.com/jovylle/mini-projects/tree/master/projects/csv-to-json" target="_blank" rel="noreferrer">View source</a>
+          <a href="../">← Back to hub</a>
+          <a href="https://github.com/jovylle/wanabusful/tree/main/csv-to-json" target="_blank" rel="noreferrer">View source</a>
           <a href="https://jovylle.com" target="_blank" rel="noreferrer">Visit jovylle.com</a>
         </div>
       </header>
@@ -182,6 +202,10 @@
           <div class="field">
             <label for="json">Plain JSON output</label>
             <textarea id="json" readonly></textarea>
+            <div class="output-actions">
+              <button type="button" onclick="copyJson()" class="secondary">Copy JSON</button>
+              <button type="button" onclick="downloadJson()" class="secondary">Download .json</button>
+            </div>
           </div>
         </div>
 
@@ -230,6 +254,28 @@
 
     document.getElementById("json").value =
       JSON.stringify(data, null, 2);
+  }
+
+  function copyJson() {
+    const jsonEl = document.getElementById("json");
+    const val = jsonEl.value.trim();
+    if (!val) return;
+    navigator.clipboard.writeText(val).then(
+      () => { if (window.alert) window.alert("JSON copied to clipboard."); },
+      () => { if (window.alert) window.alert("Copy failed."); }
+    );
+  }
+
+  function downloadJson() {
+    const val = document.getElementById("json").value.trim();
+    if (!val) return;
+    const blob = new Blob([val], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "normalized.json";
+    a.click();
+    URL.revokeObjectURL(url);
   }
 
   function normalizeCell(value) {

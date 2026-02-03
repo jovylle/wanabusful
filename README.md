@@ -3,15 +3,22 @@
 Wanabusful now exposes a single static landing page at the repository root (`index.html`),
 because Netlify can point directly to this file. That page links to:
 
-- a standalone CSV→JSON converter served from `csv-to-json/index.html`
-- the richer Next.js tool suite inside the renamed `othertools/` folder (formerly `acoolprojectaah`)
+- standalone static HTML tools, each in its own folder:
+  - `csv-to-json/` – Dynamo CSV → JSON converter
+  - `base64/` – Base64 encode/decode
+  - `json-formatter/` – JSON pretty-print / minify
+  - `lorem/` – Lorem Ipsum generator
+  - `url-encode/` – URL encode/decode (percent-encoding)
+  - `uuid/` – UUID v4 generator
+  - `markdown-preview/` – Live Markdown preview (marked.js)
+- the richer Next.js tool suite inside `othertools/` (camera, signature, audio, etc.)
 
 Each project can live in its own folder so heavier apps can evolve independently without dragging down the simple hub.
 
 ## Repository layout
 
 - `index.html` – the lightweight hub that lists every mini project (links, descriptions, CTA badges).
-- `csv-to-json/` – the Dynamo CSV parser running as a self-contained HTML + JS toolpath.
+- `csv-to-json/`, `base64/`, `json-formatter/`, `lorem/`, `url-encode/`, `uuid/`, `markdown-preview/` – self-contained HTML + JS tools (no build step).
 - `othertools/` – the Next.js workspace that hosts the camera test, signature pad, delayed audio, and audio channel tests. Treat this folder as a standalone Next.js app.
 - `https://other.uft1.com/` – the deployed runtime experience. Every Next.js route (camera, signature, delayed audio, audio test) mirrors what is hosted at that URL, so point your Netlify/hosting config there when you need a full runtime.
 
