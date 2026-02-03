@@ -59,6 +59,7 @@
           <div class="btn-row">
             <button class="primary" onclick="prettyPrint()">Pretty print</button>
             <button class="primary" onclick="minify()">Minify</button>
+            <button class="secondary" onclick="validateOnly()">Validate</button>
           </div>
           <label for="output" style="margin-top: 16px;">Output</label>
           <textarea id="output" readonly placeholder="Formatted JSON or error message"></textarea>
@@ -106,6 +107,22 @@
         outputEl.classList.remove('error');
         const parsed = parseInput();
         if (parsed !== null) outputEl.value = JSON.stringify(parsed);
+      }
+
+      function validateOnly() {
+        outputEl.classList.remove('error');
+        const raw = inputEl.value.trim();
+        if (!raw) {
+          outputEl.value = 'No input to validate.';
+          return;
+        }
+        try {
+          JSON.parse(raw);
+          outputEl.value = 'Valid JSON.';
+        } catch (e) {
+          outputEl.classList.add('error');
+          outputEl.value = 'Invalid JSON: ' + e.message;
+        }
       }
 
       function copyOutput() {
