@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>Base64 Encode / Decode</title>
+    <meta name="description" content="Encode text to Base64 or decode Base64 to text. No data leaves your browser." />
+    <meta name="keywords" content="Base64, encode, decode, base64url, text, base64" />
+    <meta name="author" content="Jovylle B. Bermudez" />
+    <style>
+      :root { font-family: "Space Grotesk", system-ui, sans-serif; background-color: #04070f; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: #020617; }
+      .page { max-width: 1100px; margin: 0 auto; padding: 48px 24px 72px; }
+      .hero { margin-bottom: 32px; }
+      .eyebrow { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.8rem; color: #94a3b8; margin: 0 0 10px; }
+      .hero h1 { margin: 0; font-size: clamp(2.5rem, 4vw, 3.2rem); line-height: 1.1; color: #f8fafc; }
+      .lede { margin-top: 12px; color: #cbd5f5; max-width: 720px; line-height: 1.6; }
+      .hero-links { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+      .hero-links a { color: #38bdf8; font-weight: 500; text-decoration: none; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+      .card { border-radius: 20px; padding: 28px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(148, 163, 184, 0.3); box-shadow: 0 20px 40px rgba(2, 6, 23, 0.65); }
+      .card label { font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; display: block; margin-bottom: 6px; }
+      textarea { width: 100%; min-height: 140px; border-radius: 14px; border: 1px solid rgba(226, 232, 240, 0.25); background: rgba(15, 23, 42, 0.9); color: #e2e8f0; font-family: "Space Grotesk", system-ui, monospace; padding: 14px; resize: vertical; }
+      .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+      button { padding: 12px 20px; border-radius: 14px; border: none; font-size: 0.95rem; font-weight: 600; color: #fff; cursor: pointer; font-family: inherit; }
+      button.primary { background: linear-gradient(135deg, #38bdf8, #6366f1); }
+      button.secondary { background: rgba(148, 163, 184, 0.25); border: 1px solid rgba(148, 163, 184, 0.4); color: #e2e8f0; }
+      button:hover { opacity: 0.95; }
+      .notes h2 { margin-top: 0; font-size: 1.5rem; color: #f8fafc; }
+      .notes p, .notes ul { color: #cbd5f5; line-height: 1.6; }
+      .notes ul { padding-left: 20px; }
+      .notes a { color: #38bdf8; }
+      code { background: rgba(59, 130, 246, 0.15); padding: 2px 6px; border-radius: 6px; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Encode & decode</p>
+        <h1>Base64 encode / decode</h1>
+        <p class="lede">
+          Paste text to encode to Base64, or paste Base64 to decode to text. Runs in the browser—nothing is sent to any server.
+        </p>
+        <div class="hero-links">
+          <a href="../">← Back to hub</a>
+          <a href="https://github.com/jovylle/wanabusful/tree/main/base64" target="_blank" rel="noreferrer">View source</a>
+        </div>
+      </header>
+
+      <section class="grid">
+        <div class="card">
+          <label for="input">Input (text or Base64)</label>
+          <textarea id="input" placeholder="Paste text or Base64 here…"></textarea>
+          <div class="btn-row">
+            <button class="primary" onclick="encodeInput()">Encode to Base64</button>
+            <button class="primary" onclick="decodeInput()">Decode from Base64</button>
+          </div>
+          <label for="output" style="margin-top: 16px;">Output</label>
+          <textarea id="output" readonly placeholder="Result will appear here"></textarea>
+          <div class="btn-row">
+            <button class="secondary" onclick="copyOutput()">Copy output</button>
+          </div>
+        </div>
+
+        <aside class="card notes">
+          <h2>How it works</h2>
+          <p>
+            <strong>Encode:</strong> Your text is converted to Base64 using the browser’s <code>btoa()</code> (UTF-8 handled via encodeURIComponent).
+          </p>
+          <p>
+            <strong>Decode:</strong> Base64 is decoded with <code>atob()</code>. Invalid Base64 will show an error in the output.
+          </p>
+          <ul>
+            <li>Useful for embedding small data in URLs or JSON.</li>
+            <li>No server round-trip—all processing is local.</li>
+          </ul>
+        </aside>
+      </section>
+    </main>
+
+    <script>
+      const inputEl = document.getElementById('input');
+      const outputEl = document.getElementById('output');
+
+      function encodeInput() {
+        const raw = inputEl.value.trim();
+        if (!raw) return;
+        try {
+          const encoded = btoa(unescape(encodeURIComponent(raw)));
+          outputEl.value = encoded;
+        } catch (e) {
+          outputEl.value = 'Encode error: ' + e.message;
+        }
+      }
+
+      function decodeInput() {
+        const raw = inputEl.value.trim();
+        if (!raw) return;
+        try {
+          const decoded = decodeURIComponent(escape(atob(raw)));
+          outputEl.value = decoded;
+        } catch (e) {
+          outputEl.value = 'Decode error: invalid Base64 or encoding.';
+        }
+      }
+
+      function copyOutput() {
+        const val = outputEl.value.trim();
+        if (!val) return;
+        navigator.clipboard.writeText(val).then(
+          () => alert('Copied to clipboard.'),
+          () => alert('Copy failed.')
+        );
+      }
+    </script>
+  </body>
+</html>

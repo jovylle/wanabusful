@@ -9,7 +9,7 @@ const metadata = {
   description: "Explore a wide range of online utilities and tools at UFT1 Tools. From signature pads to camera testers, find everything you need to enhance your digital experience.",
 };
 
-const productionUrl = "https://tools.uft1.com";
+const productionUrl = "https://other.uft1.com";
 
 export default function RootLayout ({ children }) {
   return (

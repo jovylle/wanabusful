@@ -7,18 +7,30 @@ export default function Signature() {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [error, setError] = useState('');
+  const [isDark, setIsDark] = useState(false);
+
+  // Sync with document dark mode (class on <html>) for theme-aware stroke
+  useEffect(() => {
+    const el = document.documentElement;
+    const check = () => setIsDark(el.classList.contains('dark'));
+    check();
+    const obs = new MutationObserver(check);
+    obs.observe(el, { attributes: true, attributeFilter: ['class'] });
+    return () => obs.disconnect();
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    
+
     // Set up canvas
     canvas.width = canvas.offsetWidth;
     canvas.height = 300;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.lineWidth = 2;
-    ctx.strokeStyle = '#000';
+    ctx.strokeStyle = isDark ? '#e5e7eb' : '#000';
 
     // Mouse events
     const startDrawing = (e) => {
@@ -87,7 +99,7 @@ export default function Signature() {
       canvas.removeEventListener('touchmove', drawTouch);
       canvas.removeEventListener('touchend', stopDrawingTouch);
     };
-  }, [isDrawing]);
+  }, [isDrawing, isDark]);
 
   const clearSignature = () => {
     const canvas = canvasRef.current;
