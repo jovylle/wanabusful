@@ -21,7 +21,7 @@ Each project can live in its own folder so heavier apps can evolve independently
 ## Live sites
 
 - `https://uft1.com/` – the primary showcase for Wanabusful and related mini projects.
-- `https://other.uft1.com/` – the live Next.js runtime for the camera, signature, and audio experiments.
+- `https://other.uft1.com/` – the hosted Next.js runtime that mirrors every route in `othertools/` (camera, signature, delayed audio, audio test, etc.), so visit it whenever you just want to see the full React experience without running the repo locally.
 - `https://jovylle.com/` – Jovylle’s portfolio of projects and experiments you can explore for inspiration.
 
 ## Repository layout
