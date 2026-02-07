@@ -18,6 +18,12 @@ because Netlify can point directly to this file. That page links to:
 
 Each project can live in its own folder so heavier apps can evolve independently without dragging down the simple hub.
 
+## Live sites
+
+- `https://uft1.com/` – the primary showcase for Wanabusful and related mini projects.
+- `https://other.uft1.com/` – the live Next.js runtime for the camera, signature, and audio experiments.
+- `https://jovylle.com/` – Jovylle’s portfolio of projects and experiments you can explore for inspiration.
+
 ## Repository layout
 
 - `index.html` – the lightweight hub that lists every mini project (links, descriptions, CTA badges).
