@@ -26,32 +26,53 @@
       }
 
       /* ——— Tiny / embed mode (e.g. 100×50 iframe) ——— */
+      html.tiny-root,
       body.tiny {
         min-height: 0;
         height: 100%;
+        width: 100%;
+      }
+      body.tiny {
         overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 0;
         background: var(--bg);
+        container-type: size;
+        container-name: tiny;
       }
       .tiny-wrap {
         width: 100%;
         height: 100%;
+        min-height: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 2px 4px;
+        padding: 1px 3px;
       }
+      /* Scale type to the iframe box (vmin inside tiny iframes was ~4px — unreadable) */
       .tiny-time {
         font-family: "JetBrains Mono", monospace;
         font-weight: 700;
-        font-size: clamp(10px, 8vmin, 28px);
         line-height: 1;
         color: var(--accent);
         white-space: nowrap;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.03em;
+        font-size: min(38cqh, 14cqw);
+        max-width: 100%;
+      }
+      /* HH:MM only — fewer glyphs → much larger, fills short bars like 50px height */
+      body.tiny.tiny-hhmm .tiny-time {
+        font-size: min(54cqh, 22cqw);
+      }
+      @supports not (container-type: size) {
+        .tiny-time {
+          font-size: clamp(14px, min(3.2vw, 7vh), 22px);
+        }
+        body.tiny.tiny-hhmm .tiny-time {
+          font-size: clamp(16px, min(4.2vw, 9.5vh), 28px);
+        }
       }
 
       /* ——— Full page ——— */
@@ -159,7 +180,7 @@
         <p><strong>Tiny embed</strong> — minimal UI, fits small iframes:</p>
         <ul>
           <li><code>?tiny=1</code> or <code>?mode=tiny</code></li>
-          <li><code>?seconds=0</code> — hide seconds (HH:MM)</li>
+          <li><code>?seconds=0</code> — HH:MM only + <strong>bigger</strong> type in tiny embeds</li>
           <li><code>?bg=%23000&color=%2300ff00</code> — background + time color (hex encoded)</li>
         </ul>
         <p><strong>Full page</strong> — default; analog + digital:</p>
@@ -234,7 +255,9 @@
         }
 
         if (tiny) {
+          document.documentElement.classList.add("tiny-root");
           document.body.classList.add("tiny");
+          document.body.classList.add(showSeconds ? "tiny-hms" : "tiny-hhmm");
           document.getElementById("tiny-root").hidden = false;
           const el = document.getElementById("tiny-time");
           function tickTiny() {
