@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+    <title>Clock</title>
+    <meta name="description" content="Tiny embeddable clock or full analog + digital clock with URL options." />
+    <style>
+      :root {
+        --bg: #0a0e17;
+        --fg: #e8eef7;
+        --accent: #5eead4;
+        --muted: #64748b;
+        --face: #131b2e;
+        --hand: #f1f5f9;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; }
+      body {
+        font-family: "Outfit", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+      }
+
+      /* ——— Tiny / embed mode (e.g. 100×50 iframe) ——— */
+      body.tiny {
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        background: var(--bg);
+      }
+      .tiny-wrap {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px 4px;
+      }
+      .tiny-time {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        font-size: clamp(10px, 8vmin, 28px);
+        line-height: 1;
+        color: var(--accent);
+        white-space: nowrap;
+        letter-spacing: -0.02em;
+      }
+
+      /* ——— Full page ——— */
+      body.full { min-height: 100vh; }
+      .page {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: clamp(20px, 4vw, 48px) clamp(16px, 3vw, 28px) 64px;
+      }
+      .hero { margin-bottom: 28px; }
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin: 0 0 8px;
+      }
+      .hero h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.5rem); color: var(--fg); }
+      .lede { margin-top: 10px; color: #94a3b8; line-height: 1.55; max-width: 640px; }
+      .hero-links { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px; }
+      .hero-links a { color: var(--accent); font-weight: 600; text-decoration: none; }
+      .clock-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 28px;
+        align-items: center;
+        justify-items: center;
+      }
+      @media (min-width: 720px) {
+        .clock-row { grid-template-columns: 1fr 1fr; }
+      }
+      .face-wrap {
+        width: min(72vmin, 320px);
+        aspect-ratio: 1;
+        position: relative;
+      }
+      .face-wrap svg { width: 100%; height: 100%; display: block; }
+      .digital {
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        font-size: clamp(1.5rem, 5vw, 2.25rem);
+        color: var(--accent);
+        line-height: 1.35;
+      }
+      .digital .date { font-size: 0.55em; font-weight: 500; color: var(--muted); margin-top: 8px; }
+      .card {
+        border-radius: 20px;
+        padding: 24px;
+        background: rgba(19, 27, 46, 0.9);
+        border: 1px solid rgba(100, 116, 139, 0.35);
+        margin-top: 28px;
+      }
+      .card h2 { margin: 0 0 12px; font-size: 1.2rem; }
+      .card p, .card li { color: #94a3b8; line-height: 1.55; font-size: 0.9rem; }
+      .card ul { margin: 8px 0 0; padding-left: 18px; }
+      .card code {
+        background: rgba(94, 234, 212, 0.12);
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        word-break: break-all;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="tiny-root" class="tiny-wrap" hidden>
+      <span id="tiny-time" class="tiny-time" aria-live="polite"></span>
+    </div>
+
+    <main id="full-root" class="page" hidden>
+      <header class="hero">
+        <p class="eyebrow">Time</p>
+        <h1>Clock</h1>
+        <p class="lede">
+          Analog + digital, responsive. Use URL parameters to theme and to open a <strong>tiny</strong> embed (e.g. 100×50) for iframes or special layouts.
+        </p>
+        <div class="hero-links">
+          <a href="../">← Back to hub</a>
+          <a href="?tiny=1" target="_blank" rel="noreferrer">Open tiny clock (new tab)</a>
+        </div>
+      </header>
+
+      <section class="clock-row">
+        <div class="face-wrap" id="analog-wrap" hidden>
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <circle cx="100" cy="100" r="92" fill="var(--face)" stroke="rgba(148,163,184,0.25)" stroke-width="2" />
+            <g id="ticks"></g>
+            <line id="hand-hour" x1="100" y1="100" x2="100" y2="52" stroke="var(--hand)" stroke-width="5" stroke-linecap="round" />
+            <line id="hand-min" x1="100" y1="100" x2="100" y2="36" stroke="var(--hand)" stroke-width="3" stroke-linecap="round" />
+            <line id="hand-sec" x1="100" y1="118" x2="100" y2="32" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" />
+            <circle cx="100" cy="100" r="5" fill="var(--hand)" />
+          </svg>
+        </div>
+        <div id="digital-block" hidden>
+          <div class="digital">
+            <div id="digital-time"></div>
+            <div class="date" id="digital-date"></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>Link options</h2>
+        <p><strong>Tiny embed</strong> — minimal UI, fits small iframes:</p>
+        <ul>
+          <li><code>?tiny=1</code> or <code>?mode=tiny</code></li>
+          <li><code>?seconds=0</code> — hide seconds (HH:MM)</li>
+          <li><code>?bg=%23000&color=%2300ff00</code> — background + time color (hex encoded)</li>
+        </ul>
+        <p><strong>Full page</strong> — default; analog + digital:</p>
+        <ul>
+          <li><code>?analog=0</code> — hide analog face</li>
+          <li><code>?digital=0</code> — hide digital block</li>
+          <li><code>?tz=America%2FNew_York</code> — IANA timezone (optional)</li>
+          <li><code>?12</code> or <code>?format=12</code> — 12-hour digital</li>
+          <li><code>?bg=…&fg=…&accent=…</code> — CSS colors (hex or names)</li>
+        </ul>
+      </aside>
+    </main>
+
+    <script>
+      (function () {
+        const params = new URLSearchParams(location.search);
+        const tiny =
+          params.get("tiny") === "1" ||
+          params.get("mode") === "tiny" ||
+          params.get("embed") === "1";
+
+        function hexColor(v, fallback) {
+          if (!v) return fallback;
+          if (/^#[0-9a-fA-F]{3,8}$/.test(v)) return v;
+          return v;
+        }
+
+        const bg = hexColor(params.get("bg"), "#0a0e17");
+        const fg = hexColor(params.get("fg"), "#e8eef7");
+        const accent = hexColor(params.get("accent") || params.get("color"), "#5eead4");
+        document.documentElement.style.setProperty("--bg", bg);
+        document.documentElement.style.setProperty("--fg", fg);
+        document.documentElement.style.setProperty("--accent", accent);
+        document.documentElement.style.setProperty("--hand", fg);
+
+        const tz = params.get("tz") || undefined;
+        const showSeconds = params.get("seconds") !== "0";
+        const hour12 =
+          params.has("12") ||
+          params.get("format") === "12" ||
+          params.get("hour12") === "1";
+        const showAnalog = params.get("analog") !== "0";
+        const showDigital = params.get("digital") !== "0";
+
+        function formatTiny(d) {
+          const o = { hour: "2-digit", minute: "2-digit", hour12 };
+          if (showSeconds) o.second = "2-digit";
+          if (tz) o.timeZone = tz;
+          return d.toLocaleTimeString(undefined, o);
+        }
+
+        function formatDigitalTime(d) {
+          const o = {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12,
+          };
+          if (tz) o.timeZone = tz;
+          return d.toLocaleTimeString(undefined, o);
+        }
+
+        function formatDate(d) {
+          const o = {
+            weekday: "short",
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          };
+          if (tz) o.timeZone = tz;
+          return d.toLocaleDateString(undefined, o);
+        }
+
+        if (tiny) {
+          document.body.classList.add("tiny");
+          document.getElementById("tiny-root").hidden = false;
+          const el = document.getElementById("tiny-time");
+          function tickTiny() {
+            el.textContent = formatTiny(new Date());
+          }
+          tickTiny();
+          setInterval(tickTiny, showSeconds ? 250 : 1000);
+          document.title = "Clock · tiny";
+          return;
+        }
+
+        document.body.classList.add("full");
+        document.getElementById("full-root").hidden = false;
+        document.title = "Clock · Wanabusful";
+
+        const ticks = document.getElementById("ticks");
+        for (let i = 0; i < 12; i++) {
+          const a = (i * 30 * Math.PI) / 180;
+          const r1 = 78;
+          const r2 = i % 3 === 0 ? 64 : 70;
+          const x1 = 100 + r1 * Math.sin(a);
+          const y1 = 100 - r1 * Math.cos(a);
+          const x2 = 100 + r2 * Math.sin(a);
+          const y2 = 100 - r2 * Math.cos(a);
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", x1);
+          line.setAttribute("y1", y1);
+          line.setAttribute("x2", x2);
+          line.setAttribute("y2", y2);
+          line.setAttribute("stroke", "rgba(148,163,184,0.45)");
+          line.setAttribute("stroke-width", i % 3 === 0 ? 2.5 : 1.2);
+          line.setAttribute("stroke-linecap", "round");
+          ticks.appendChild(line);
+        }
+
+        const handH = document.getElementById("hand-hour");
+        const handM = document.getElementById("hand-min");
+        const handS = document.getElementById("hand-sec");
+        const analogWrap = document.getElementById("analog-wrap");
+        const digitalBlock = document.getElementById("digital-block");
+        const digitalTime = document.getElementById("digital-time");
+        const digitalDate = document.getElementById("digital-date");
+
+        if (showAnalog) analogWrap.hidden = false;
+        if (showDigital) digitalBlock.hidden = false;
+
+        function setHand(el, deg) {
+          el.setAttribute("transform", "rotate(" + deg + " 100 100)");
+        }
+
+        function timeInZone(d, timeZone) {
+          if (!timeZone) return { h: d.getHours(), m: d.getMinutes(), s: d.getSeconds(), ms: d.getMilliseconds() };
+          const f = new Intl.DateTimeFormat("en-GB", {
+            timeZone,
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: false,
+          });
+          const map = {};
+          f.formatToParts(d).forEach(function (p) {
+            if (p.type !== "literal") map[p.type] = +p.value;
+          });
+          return {
+            h: map.hour,
+            m: map.minute,
+            s: map.second,
+            ms: d.getMilliseconds(),
+          };
+        }
+
+        function tick() {
+          const d = new Date();
+          const t = timeInZone(d, tz);
+          const h = t.h;
+          const m = t.m;
+          const s = t.s;
+          const ms = t.ms;
+
+          const secDeg = s * 6 + ms * 0.006;
+          const minDeg = m * 6 + s * 0.1;
+          const hourDeg = (h % 12) * 30 + m * 0.5 + s * (0.5 / 60);
+
+          if (showAnalog) {
+            setHand(handH, hourDeg);
+            setHand(handM, minDeg);
+            setHand(handS, secDeg);
+          }
+          if (showDigital) {
+            digitalTime.textContent = formatDigitalTime(d);
+            digitalDate.textContent = formatDate(d);
+          }
+        }
+
+        tick();
+        setInterval(tick, 80);
+      })();
+    </script>
+  </body>
+</html>
