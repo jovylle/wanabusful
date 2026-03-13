@@ -58,5 +58,19 @@ When you’re ready to deploy the Next.js suite, use the same workflow you would
 - Contributors: Jovylle, ByteSurfer23, Maynard Rosales.
 - When updating the runtime tools, redeploy `https://other.uft1.com/` so the hosted routes stay in sync with what’s listed on this landing page (see `https://other.uft1.com/camera` as proof-of-deployment).
 
+## SEO (search discoverability)
+
+- **Static hub (`index.html` + tool folders)**  
+  - Unique `<title>` and `description` per page, **canonical** URLs (`https://uft1.com/...`), **Open Graph** + Twitter cards, **JSON-LD** (`WebSite` + `ItemList` on home; `WebApplication` on each tool).  
+  - **`robots.txt`** and **`sitemap.xml`** at the repo root — submit the sitemap in [Google Search Console](https://search.google.com/search-console) (property: `https://uft1.com`).  
+  - If the site is ever served from another domain, update canonicals, `sitemap.xml`, and `robots.txt` to match.
+
+- **Next.js app (`othertools/`)**  
+  - App Router **`sitemap.js`** and **`robots.js`** (base URL `https://other.uft1.com`).  
+  - Per-route **`layout.js`** metadata (camera, signature, delayed-audio, audio-test) with titles/descriptions aimed at real searches (e.g. “camera test”, “signature pad online”).  
+  - Root **`layout.js`** uses `metadataBase` + default OG/Twitter. Submit `https://other.uft1.com/sitemap.xml` in Search Console for that host.
+
+Ranking still depends on relevance, backlinks, and time — technical SEO makes pages *eligible* and *understandable* for search engines.
+
 Happy coding! 🚀
 

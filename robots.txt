@@ -1,0 +1,6 @@
+# Wanabusful / UFT1 mini tools — allow indexing of public tools
+User-agent: *
+Allow: /
+
+# Sitemap (update domain if you deploy elsewhere)
+Sitemap: https://uft1.com/sitemap.xml

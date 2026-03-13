@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://uft1.com/</loc><changefreq>weekly</changefreq><priority>1</priority></url>
+  <url><loc>https://uft1.com/base64/</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://uft1.com/color-converter/</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://uft1.com/clock/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://uft1.com/csv-to-json/</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://uft1.com/json-formatter/</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://uft1.com/lorem/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://uft1.com/markdown-preview/</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://uft1.com/slug-generator/</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://uft1.com/timestamp/</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://uft1.com/url-encode/</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://uft1.com/uuid/</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+</urlset>
