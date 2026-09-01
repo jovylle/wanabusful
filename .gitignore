@@ -38,3 +38,4 @@ othertools/.vercel
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+index.html.orig-500lines

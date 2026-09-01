@@ -1,0 +1,5 @@
+[
+  {"slug":"go-uft1","title":"go.uft1.com — URL shortener","description":"Live deployed tool at go.uft1.com","href":"https://go.uft1.com","tags":["live","shortener"],"source":"live","provider":"uft1"},
+  {"slug":"gallery-uft1","title":"gallery.uft1.com — Project gallery","description":"500 micro-tool specs at gallery.uft1.com","href":"https://gallery.uft1.com","tags":["live","gallery"],"source":"live","provider":"uft1"},
+  {"slug":"jovylle-portfolio","title":"jovylle.com — Portfolio","description":"Main portfolio + widget + content CDN","href":"https://jovylle.com","tags":["live","portfolio"],"source":"live","provider":"jovylle"}
+]

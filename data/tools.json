@@ -1,0 +1,297 @@
+[
+  {
+    "slug": "base64",
+    "title": "Base64 encode / decode",
+    "description": "Encode text to Base64 or decode Base64 to text. Runs entirely in the browser \u2014 no data leaves your machine.",
+    "href": "./base64/",
+    "tags": [
+      "encode",
+      "decode",
+      "vanilla",
+      "privacy"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "json-formatter",
+    "title": "JSON formatter",
+    "description": "Pretty-print or minify JSON. Validate and format in the browser with copy-to-clipboard.",
+    "href": "./json-formatter/",
+    "tags": [
+      "json",
+      "formatter",
+      "vanilla"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "uuid",
+    "title": "UUID generator",
+    "description": "Generate random UUIDs (v4). Pick how many, copy one or all. Uses crypto.randomUUID.",
+    "href": "./uuid/",
+    "tags": [
+      "uuid",
+      "generator",
+      "vanilla"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "url-encode",
+    "title": "URL encode / decode",
+    "description": "Encode text for URLs (query params) or decode percent-encoded strings.",
+    "href": "./url-encode/",
+    "tags": [
+      "url",
+      "encode",
+      "vanilla"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "csv-to-json",
+    "title": "CSV \u2192 JSON converter",
+    "description": "Normalize DynamoDB-style exports, type booleans/numbers, flatten maps, emit pretty JSON.",
+    "href": "./csv-to-json/",
+    "tags": [
+      "csv",
+      "json",
+      "converter"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "markdown-preview",
+    "title": "Markdown preview",
+    "description": "Type Markdown and see rendered HTML in real time. Powered by marked.js; runs in browser.",
+    "href": "./markdown-preview/",
+    "tags": [
+      "markdown",
+      "preview",
+      "vanilla"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "timestamp",
+    "title": "Unix timestamp converter",
+    "description": "Convert Unix timestamp (seconds or ms) to human date, or date to Unix. \u201cNow\u201d fills current time.",
+    "href": "./timestamp/",
+    "tags": [
+      "timestamp",
+      "unix",
+      "date"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "color-converter",
+    "title": "Hex \u2194 RGB color converter",
+    "description": "Convert hex \u2194 RGB with live swatch preview. Privacy-first, no upload.",
+    "href": "./color-converter/",
+    "tags": [
+      "color",
+      "hex",
+      "rgb"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "slug-generator",
+    "title": "URL slug generator",
+    "description": "Title \u2192 URL slug (lowercase, hyphens).",
+    "href": "./slug-generator/",
+    "tags": [
+      "slug",
+      "url",
+      "vanilla"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "lorem",
+    "title": "Lorem Ipsum generator",
+    "description": "Generate paragraphs, sentences, or words of Lorem Ipsum for mockups.",
+    "href": "./lorem/",
+    "tags": [
+      "lorem",
+      "placeholder",
+      "vanilla"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "clock",
+    "title": "Clock (embeddable)",
+    "description": "Full analog + digital, or tiny embed ?tiny=1 for 100\u00d750 iframes. Theme and TZ via URL.",
+    "href": "./clock/",
+    "tags": [
+      "clock",
+      "embed",
+      "vanilla"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "neon-free-postgres",
+    "title": "Neon \u2014 free Postgres",
+    "description": "Free-tier Postgres: 0.5 GB, serverless scale-to-zero. From free-tier stack.",
+    "href": "https://neon.tech",
+    "tags": [
+      "free-tier",
+      "postgres",
+      "database",
+      "free"
+    ],
+    "source": "free-tier",
+    "provider": "neon"
+  },
+  {
+    "slug": "supabase-free",
+    "title": "Supabase \u2014 free Postgres + Auth",
+    "description": "Free-tier Postgres + Auth + Storage. 500 MB DB, 50k MAU. From free-tier stack.",
+    "href": "https://supabase.com",
+    "tags": [
+      "free-tier",
+      "postgres",
+      "auth",
+      "free"
+    ],
+    "source": "free-tier",
+    "provider": "supabase"
+  },
+  {
+    "slug": "cloudflare-free",
+    "title": "Cloudflare Workers \u2014 free tier",
+    "description": "100k requests/day free. From free-tier stack \u2014 edge compute.",
+    "href": "https://workers.cloudflare.com",
+    "tags": [
+      "free-tier",
+      "workers",
+      "edge",
+      "free"
+    ],
+    "source": "free-tier",
+    "provider": "cloudflare"
+  },
+  {
+    "slug": "upstash-free-redis",
+    "title": "Upstash \u2014 free Redis",
+    "description": "Free-tier serverless Redis, 10k commands/day. From free-tier stack.",
+    "href": "https://upstash.com",
+    "tags": [
+      "free-tier",
+      "redis",
+      "free"
+    ],
+    "source": "free-tier",
+    "provider": "upstash"
+  },
+  {
+    "slug": "resend-free-email",
+    "title": "Resend \u2014 free email",
+    "description": "100 emails/day free, 3k/month. From free-tier stack.",
+    "href": "https://resend.com",
+    "tags": [
+      "free-tier",
+      "email",
+      "free"
+    ],
+    "source": "free-tier",
+    "provider": "resend"
+  },
+  {
+    "slug": "skill-github-review",
+    "title": "Skill: github-code-review",
+    "description": "Hermes skill \u2014 review PRs via gh/REST, inline comments, CI checks.",
+    "href": "https://github.com/jovylle/wanabusful",
+    "tags": [
+      "skill",
+      "github",
+      "review",
+      "skill:github"
+    ],
+    "source": "skill",
+    "provider": "hermes"
+  },
+  {
+    "slug": "skill-hermes-agent",
+    "title": "Skill: hermes-agent",
+    "description": "Hermes skill \u2014 configure, theme, extend, orchestrate Hermes Agent.",
+    "href": "https://github.com/jovylle/wanabusful",
+    "tags": [
+      "skill",
+      "hermes",
+      "skill:hermes"
+    ],
+    "source": "skill",
+    "provider": "hermes"
+  },
+  {
+    "slug": "skill-vercel-deploy",
+    "title": "Skill: cloudflare-workers",
+    "description": "Hermes skill \u2014 scaffold/test Cloudflare Workers (Hono, D1, R2, vitest).",
+    "href": "https://github.com/jovylle/wanabusful",
+    "tags": [
+      "skill",
+      "cloudflare",
+      "workers",
+      "skill:cloudflare"
+    ],
+    "source": "skill",
+    "provider": "hermes"
+  },
+  {
+    "slug": "skill-prompt-injection",
+    "title": "Skill: prompt-injection-defense",
+    "description": "Security skill \u2014 defend against hidden instructions in messages.",
+    "href": "https://github.com/jovylle/wanabusful",
+    "tags": [
+      "skill",
+      "security",
+      "prompt",
+      "skill:security"
+    ],
+    "source": "skill",
+    "provider": "hermes"
+  },
+  {
+    "slug": "opencode-viewer",
+    "title": "Opencode Model Viewer \u2014 live",
+    "description": "Live viewer for 568 opencode provider/model ids: current + fallback chain, live dots, search & copy. Zero-build.",
+    "href": "../my-tool/models/",
+    "tags": [
+      "opencode",
+      "models",
+      "viewer",
+      "live"
+    ],
+    "source": "live",
+    "provider": "opencode"
+  },
+  {
+    "slug": "othertools-suite",
+    "title": "Next.js tool suite (camera, audio, signature)",
+    "description": "Next.js shell: camera test, signature pad, delayed audio, stereo channel verification.",
+    "href": "https://other.uft1.com/",
+    "tags": [
+      "nextjs",
+      "camera",
+      "audio",
+      "suite"
+    ],
+    "source": "live",
+    "provider": "nextjs"
+  }
+]
