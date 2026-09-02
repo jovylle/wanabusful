@@ -144,133 +144,10 @@
     "provider": "static"
   },
   {
-    "slug": "neon-free-postgres",
-    "title": "Neon \u2014 free Postgres",
-    "description": "Free-tier Postgres: 0.5 GB, serverless scale-to-zero. From free-tier stack.",
-    "href": "https://neon.tech",
-    "tags": [
-      "free-tier",
-      "postgres",
-      "database",
-      "free"
-    ],
-    "source": "free-tier",
-    "provider": "neon"
-  },
-  {
-    "slug": "supabase-free",
-    "title": "Supabase \u2014 free Postgres + Auth",
-    "description": "Free-tier Postgres + Auth + Storage. 500 MB DB, 50k MAU. From free-tier stack.",
-    "href": "https://supabase.com",
-    "tags": [
-      "free-tier",
-      "postgres",
-      "auth",
-      "free"
-    ],
-    "source": "free-tier",
-    "provider": "supabase"
-  },
-  {
-    "slug": "cloudflare-free",
-    "title": "Cloudflare Workers \u2014 free tier",
-    "description": "100k requests/day free. From free-tier stack \u2014 edge compute.",
-    "href": "https://workers.cloudflare.com",
-    "tags": [
-      "free-tier",
-      "workers",
-      "edge",
-      "free"
-    ],
-    "source": "free-tier",
-    "provider": "cloudflare"
-  },
-  {
-    "slug": "upstash-free-redis",
-    "title": "Upstash \u2014 free Redis",
-    "description": "Free-tier serverless Redis, 10k commands/day. From free-tier stack.",
-    "href": "https://upstash.com",
-    "tags": [
-      "free-tier",
-      "redis",
-      "free"
-    ],
-    "source": "free-tier",
-    "provider": "upstash"
-  },
-  {
-    "slug": "resend-free-email",
-    "title": "Resend \u2014 free email",
-    "description": "100 emails/day free, 3k/month. From free-tier stack.",
-    "href": "https://resend.com",
-    "tags": [
-      "free-tier",
-      "email",
-      "free"
-    ],
-    "source": "free-tier",
-    "provider": "resend"
-  },
-  {
-    "slug": "skill-github-review",
-    "title": "Skill: github-code-review",
-    "description": "Hermes skill \u2014 review PRs via gh/REST, inline comments, CI checks.",
-    "href": "https://github.com/jovylle/wanabusful",
-    "tags": [
-      "skill",
-      "github",
-      "review",
-      "skill:github"
-    ],
-    "source": "skill",
-    "provider": "hermes"
-  },
-  {
-    "slug": "skill-hermes-agent",
-    "title": "Skill: hermes-agent",
-    "description": "Hermes skill \u2014 configure, theme, extend, orchestrate Hermes Agent.",
-    "href": "https://github.com/jovylle/wanabusful",
-    "tags": [
-      "skill",
-      "hermes",
-      "skill:hermes"
-    ],
-    "source": "skill",
-    "provider": "hermes"
-  },
-  {
-    "slug": "skill-vercel-deploy",
-    "title": "Skill: cloudflare-workers",
-    "description": "Hermes skill \u2014 scaffold/test Cloudflare Workers (Hono, D1, R2, vitest).",
-    "href": "https://github.com/jovylle/wanabusful",
-    "tags": [
-      "skill",
-      "cloudflare",
-      "workers",
-      "skill:cloudflare"
-    ],
-    "source": "skill",
-    "provider": "hermes"
-  },
-  {
-    "slug": "skill-prompt-injection",
-    "title": "Skill: prompt-injection-defense",
-    "description": "Security skill \u2014 defend against hidden instructions in messages.",
-    "href": "https://github.com/jovylle/wanabusful",
-    "tags": [
-      "skill",
-      "security",
-      "prompt",
-      "skill:security"
-    ],
-    "source": "skill",
-    "provider": "hermes"
-  },
-  {
     "slug": "opencode-viewer",
     "title": "Opencode Model Viewer \u2014 live",
-    "description": "Live viewer for 568 opencode provider/model ids: current + fallback chain, live dots, search & copy. Zero-build.",
-    "href": "../my-tool/models/",
+    "description": "Live viewer for 567 opencode provider/model ids: current + fallback chain, live dots, search & copy. Zero-build.",
+    "href": "https://models.uft1.com/",
     "tags": [
       "opencode",
       "models",
@@ -283,7 +160,7 @@
   {
     "slug": "othertools-suite",
     "title": "Next.js tool suite (camera, audio, signature)",
-    "description": "Next.js shell: camera test, signature pad, delayed audio, stereo channel verification.",
+    "description": "Next.js shell: camera test, signature pad, delayed audio, stereo channel verification at other.uft1.com.",
     "href": "https://other.uft1.com/",
     "tags": [
       "nextjs",
