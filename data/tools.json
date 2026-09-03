@@ -144,6 +144,85 @@
     "provider": "static"
   },
   {
+    "slug": "hash-generator",
+    "title": "Hash generator",
+    "description": "Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512 from text or file. Copy hex, privacy-first.",
+    "href": "./hash-generator/",
+    "tags": [
+      "hash",
+      "sha",
+      "md5",
+      "crypto"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "regex-tester",
+    "title": "Regex tester",
+    "description": "Test regex pattern + flags against text. Live highlighting, groups, replace preview.",
+    "href": "./regex-tester/",
+    "tags": [
+      "regex",
+      "tester",
+      "pattern"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "diff-checker",
+    "title": "Diff checker",
+    "description": "Compare two texts line-by-line. Added/removed highlighting with stats.",
+    "href": "./diff-checker/",
+    "tags": [
+      "diff",
+      "compare",
+      "text"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "jwt-decoder",
+    "title": "JWT decoder",
+    "description": "Decode JWT header/payload, pretty JSON, expiry check. No verify, no upload.",
+    "href": "./jwt-decoder/",
+    "tags": [
+      "jwt",
+      "decoder",
+      "token"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "qr-generator",
+    "title": "QR generator",
+    "description": "Text/URL \u2192 QR code. Size, error correction, download PNG. Offline fallback.",
+    "href": "./qr-generator/",
+    "tags": [
+      "qr",
+      "qrcode",
+      "generator"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
+    "slug": "password-generator",
+    "title": "Password generator",
+    "description": "Secure random passwords via crypto.getRandomValues. Entropy meter, bulk 5, copy.",
+    "href": "./password-generator/",
+    "tags": [
+      "password",
+      "generator",
+      "security"
+    ],
+    "source": "static",
+    "provider": "static"
+  },
+  {
     "slug": "opencode-viewer",
     "title": "Opencode Model Viewer \u2014 live",
     "description": "Live viewer for 567 opencode provider/model ids: current + fallback chain, live dots, search & copy. Zero-build.",

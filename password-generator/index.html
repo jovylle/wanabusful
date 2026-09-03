@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../shared/theme.css"/>
+<title>Password Generator — random, secure</title>
+<meta name="description" content="Generate secure random passwords. Choose length, charset, exclude ambiguous, entropy meter, copy. Runs in browser, no upload."/>
+<link rel="canonical" href="https://hub.uft1.com/tools/password-generator/"/>
+<style>
+  .panel{background:rgba(15,23,42,0.85);border:1px solid rgba(148,163,184,0.3);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px}
+  .out{font-family:JetBrains Mono,monospace;font-size:1.15rem;word-break:break-all;background:rgba(2,6,23,0.8);border:1px solid rgba(148,163,184,0.2);border-radius:14px;padding:16px;color:#f8fafc;min-height:56px;display:flex;align-items:center}
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+  .ctrl{background:rgba(15,23,42,0.6);border:1px solid rgba(148,163,184,0.2);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+  .ctrl label{font-size:0.82rem;color:#94a3b8;letter-spacing:0.08em;text-transform:uppercase}
+  .ctrl input[type=range]{width:100%}
+  .checks{display:flex;flex-wrap:wrap;gap:10px}
+  .checks label{font-size:0.85rem;color:#cbd5f5;text-transform:none;letter-spacing:normal;display:flex;align-items:center;gap:6px}
+  .meter{height:8px;border-radius:999px;background:rgba(148,163,184,0.2);overflow:hidden}
+  .meter-fill{height:100%;border-radius:999px;transition:width 0.3s}
+  .bulk{display:grid;grid-template-columns:1fr;gap:8px}
+  .bulk code{font-family:JetBrains Mono,monospace;background:rgba(2,6,23,0.6);border:1px solid rgba(148,163,184,0.15);border-radius:10px;padding:10px;cursor:pointer}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<main class="page">
+<header class="hero">
+<p class="eyebrow">Secret tools</p>
+<h1>Password generator</h1>
+<p class="lede">Secure random passwords via <code>crypto.getRandomValues</code>. Nothing leaves your browser. Pick length, charset, entropy.</p>
+<div class="hero-links"><a href="../">← Back to hub</a><a href="https://github.com/jovylle/wanabusful" target="_blank" rel="noreferrer">View source</a></div>
+</header>
+
+<section class="panel">
+<div class="out" id="out">—</div>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+  <div style="font-size:0.85rem;color:#94a3b8"><span id="entropy">—</span> bits · <span id="strength">—</span></div>
+  <div class="meter" style="flex:1;max-width:220px"><div id="fill" class="meter-fill" style="width:0;background:#22c55e"></div></div>
+</div>
+<div class="btn-row">
+  <button class="cta" id="gen" style="border:none;cursor:pointer">Generate</button>
+  <button class="btn" id="copy">Copy</button>
+  <button class="btn" id="bulk">Generate 5</button>
+</div>
+<div class="bulk" id="bulkOut" style="display:none"></div>
+</section>
+
+<section class="controls">
+  <div class="ctrl">
+    <label>Length: <span id="lenV">16</span></label>
+    <input id="len" type="range" min="8" max="64" value="16"/>
+  </div>
+  <div class="ctrl">
+    <label>Charset</label>
+    <div class="checks">
+      <label><input type="checkbox" id="upper" checked/> A-Z</label>
+      <label><input type="checkbox" id="lower" checked/> a-z</label>
+      <label><input type="checkbox" id="nums" checked/> 0-9</label>
+      <label><input type="checkbox" id="syms" checked/> !@#$…</label>
+      <label><input type="checkbox" id="ambig"/> Exclude ambiguous (0O1lI)</label>
+    </div>
+  </div>
+</section>
+
+<section class="card notes">
+<h2>How it works</h2>
+<p>Uses <code>crypto.getRandomValues</code> — cryptographically secure, not <code>Math.random</code>. Entropy = <code>log2(charset) × length</code>. Strength: &lt;40 weak, 60+ strong, 80+ very strong. Generate locally, copy, no upload.</p>
+</section>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const out=$('#out'), len=$('#len'), lenV=$('#lenV'), upper=$('#upper'), lower=$('#lower'), nums=$('#nums'), syms=$('#syms'), ambig=$('#ambig'), entropyEl=$('#entropy'), strengthEl=$('#strength'), fill=$('#fill'), bulkOut=$('#bulkOut');
+function charset(){
+  let c='';
+  if(upper.checked) c+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if(lower.checked) c+='abcdefghijklmnopqrstuvwxyz';
+  if(nums.checked) c+='0123456789';
+  if(syms.checked) c+='!@#$%^&*_-+=<>?';
+  if(ambig.checked) c=c.replace(/[0O1lI]/g,'');
+  return c;
+}
+function genOne(){
+  const cs=charset();
+  if(!cs) return '— enable at least one charset';
+  const n=parseInt(len.value,10);
+  const arr=new Uint32Array(n);
+  crypto.getRandomValues(arr);
+  let s='';
+  for(let i=0;i<n;i++) s+=cs[arr[i]%cs.length];
+  return s;
+}
+function entropy(){
+  const cs=charset(); const n=parseInt(len.value,10);
+  if(!cs) return 0;
+  return Math.log2(cs.length)*n;
+}
+function updateMeter(){
+  const e=entropy(); entropyEl.textContent=e.toFixed(1);
+  let label='weak', color='#ef4444', w=Math.min(100, e);
+  if(e>=80){label='very strong'; color='#22c55e';}
+  else if(e>=60){label='strong'; color='#22c55e';}
+  else if(e>=40){label='fair'; color='#f59e0b';}
+  strengthEl.textContent=label; fill.style.width=w+'%'; fill.style.background=color;
+}
+function generate(){
+  const pw=genOne(); out.textContent=pw; updateMeter(); bulkOut.style.display='none';
+}
+$('#gen').addEventListener('click', generate);
+$('#copy').addEventListener('click', ()=>{ navigator.clipboard.writeText(out.textContent); const b=$('#copy'); const t=b.textContent; b.textContent='Copied!'; setTimeout(()=>b.textContent=t,1200);});
+$('#bulk').addEventListener('click', ()=>{
+  const arr=Array.from({length:5}, ()=>genOne());
+  bulkOut.innerHTML=arr.map(s=>`<code title="Click to copy">${s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</code>`).join('');
+  bulkOut.style.display='grid';
+  bulkOut.querySelectorAll('code').forEach(c=>c.addEventListener('click',()=>{navigator.clipboard.writeText(c.textContent); c.style.borderColor='#22c55e'; setTimeout(()=>c.style.borderColor='',800)}));
+});
+len.addEventListener('input', ()=>{ lenV.textContent=len.value; updateMeter();});
+[upper,lower,nums,syms,ambig].forEach(el=>el.addEventListener('change', updateMeter));
+updateMeter(); generate();
+</script>
+</body>
+</html>

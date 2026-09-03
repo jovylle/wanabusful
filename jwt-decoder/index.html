@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../shared/theme.css" />
+    <title>JWT Decoder</title>
+    <meta name="description" content="Decode JWT header and payload in your browser. Base64url decode, pretty JSON, expiry and issued-at. No verification — signature shown as-is. Nothing leaves your browser." />
+    <meta name="keywords" content="JWT, JSON Web Token, decode, base64url, header, payload, exp, iat" />
+    <meta name="author" content="Jovylle B. Bermudez" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://uft1.com/jwt-decoder/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://uft1.com/jwt-decoder/" />
+    <meta property="og:title" content="Free JWT decoder — header & payload in browser" />
+    <meta property="og:description" content="Paste a JWT to decode header and payload. Base64url, pretty JSON, exp/iat summary. No signature verification. Runs locally." />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"JWT Decoder","url":"https://uft1.com/jwt-decoder/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Decode JWT header and payload via base64url. Shows expiry, issued-at, and signature placeholder. No verification."}</script>
+    <style>
+      :root { font-family: "Space Grotesk", system-ui, sans-serif; background-color: #020617; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: #020617; }
+      .page { max-width: 1100px; margin: 0 auto; padding: 48px 24px 72px; }
+      .hero { margin-bottom: 32px; }
+      .eyebrow { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.8rem; color: #94a3b8; margin: 0 0 10px; }
+      .hero h1 { margin: 0; font-size: clamp(2.5rem, 4vw, 3.2rem); line-height: 1.1; color: #f8fafc; }
+      .lede { margin-top: 12px; color: #cbd5f5; max-width: 720px; line-height: 1.6; }
+      .hero-links { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+      .hero-links a { color: #38bdf8; font-weight: 500; text-decoration: none; }
+      .grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+      .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+      .card { border-radius: 20px; padding: 28px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(148, 163, 184, 0.3); box-shadow: 0 20px 40px rgba(2, 6, 23, 0.65); }
+      .card label { font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; display: block; margin-bottom: 6px; }
+      textarea { width: 100%; min-height: 110px; border-radius: 14px; border: 1px solid rgba(226, 232, 240, 0.25); background: rgba(15, 23, 42, 0.9); color: #e2e8f0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9rem; padding: 14px; resize: vertical; word-break: break-all; }
+      textarea:focus { outline: none; border-color: rgba(56, 189, 248, 0.6); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15); }
+      pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; line-height: 1.6; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 14px; padding: 16px; min-height: 120px; max-height: 420px; overflow: auto; color: #e2e8f0; }
+      pre.muted { color: #64748b; display: flex; align-items: center; }
+      .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+      button { padding: 11px 18px; border-radius: 14px; border: none; font-size: 0.9rem; font-weight: 600; color: #fff; cursor: pointer; font-family: inherit; line-height: 1; }
+      button.primary { background: linear-gradient(135deg, #38bdf8, #6366f1); }
+      button.secondary { background: rgba(148, 163, 184, 0.2); border: 1px solid rgba(148, 163, 184, 0.35); color: #e2e8f0; }
+      button.ghost { background: transparent; border: 1px solid rgba(148, 163, 184, 0.25); color: #94a3b8; padding: 7px 12px; font-size: 0.8rem; border-radius: 999px; }
+      button:hover { opacity: 0.95; }
+      button:disabled { opacity: 0.5; cursor: not-allowed; }
+      .claims { display: grid; gap: 10px; margin-top: 14px; }
+      .claim { display: flex; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(148, 163, 184, 0.2); font-size: 0.9rem; }
+      .claim dt { color: #94a3b8; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
+      .claim dd { margin: 2px 0 0; color: #f8fafc; font-weight: 600; word-break: break-all; text-align: right; }
+      .claim small { display: block; color: #64748b; font-weight: 400; font-size: 0.8rem; margin-top: 2px; }
+      .sig-box { padding: 14px; border-radius: 14px; background: rgba(15, 23, 42, 0.9); border: 1px dashed rgba(148, 163, 184, 0.3); color: #94a3b8; font-family: ui-monospace, monospace; font-size: 0.85rem; word-break: break-all; min-height: 56px; }
+      .sig-box.has-sig { color: #e2e8f0; border-style: solid; }
+      .error { color: #f87171; background: rgba(248, 113, 113, 0.08); border: 1px solid rgba(248, 113, 113, 0.3); border-radius: 12px; padding: 12px 14px; font-size: 0.9rem; line-height: 1.5; display: none; }
+      .error.show { display: block; }
+      .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: middle; margin-right: 6px; }
+      .dot-ok { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.5); }
+      .dot-warn { background: #f59e0b; }
+      .dot-err { background: #ef4444; }
+      .notes h2 { margin-top: 0; font-size: 1.2rem; color: #f8fafc; }
+      .notes p, .notes ul { color: #cbd5f5; line-height: 1.6; font-size: 0.9rem; }
+      .notes ul { padding-left: 20px; }
+      .notes a { color: #38bdf8; }
+      code { background: rgba(59, 130, 246, 0.15); padding: 2px 6px; border-radius: 6px; font-size: 0.85rem; }
+      .section-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+      .section-head h2 { margin: 0; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; color: #cbd5f5; }
+      .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #e2e8f0; border: 1px solid rgba(148,163,184,0.3); padding: 10px 16px; border-radius: 999px; font-size: 0.85rem; opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 50; }
+      .toast.show { opacity: 1; }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Decode & inspect</p>
+        <h1>JWT Decoder</h1>
+        <p class="lede">
+          Paste a JSON Web Token to decode its header and payload. Base64url decoded in your browser — nothing is sent to any server. Signature is shown as-is, not verified.
+        </p>
+        <div class="hero-links">
+          <a href="../">← Back to hub</a>
+          <a href="https://github.com/jovylle/wanabusful/tree/main/jwt-decoder" target="_blank" rel="noreferrer">View source</a>
+        </div>
+      </header>
+
+      <section class="grid">
+        <div class="card">
+          <label for="jwt-input">JWT (header.payload.signature)</label>
+          <textarea id="jwt-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE5MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" spellcheck="false" autocomplete="off"></textarea>
+          <div class="btn-row">
+            <button class="primary" id="btn-decode">Decode</button>
+            <button class="secondary" id="btn-clear">Clear</button>
+            <button class="secondary" id="btn-sample">Load sample</button>
+            <button class="secondary" id="btn-paste">Paste</button>
+          </div>
+          <div id="error" class="error" role="alert" style="margin-top:14px"></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="section-head">
+              <h2>Header</h2>
+              <button class="ghost" id="btn-copy-header">Copy header</button>
+            </div>
+            <pre id="header-out" class="muted">Header will appear here</pre>
+          </div>
+          <div class="card">
+            <div class="section-head">
+              <h2>Payload</h2>
+              <button class="ghost" id="btn-copy-payload">Copy payload</button>
+            </div>
+            <pre id="payload-out" class="muted">Payload will appear here</pre>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <h2 style="margin:0 0 4px; font-size:1rem; color:#f8fafc; letter-spacing:0.06em; text-transform:uppercase;">Claims summary</h2>
+            <p style="margin:0 0 10px; color:#64748b; font-size:0.85rem;">Derived from payload — <code>exp</code> and <code>iat</code> as Unix seconds.</p>
+            <div class="claims">
+              <div class="claim">
+                <div><dt>Expiry (exp)</dt><dd id="claim-exp-val" style="color:#94a3b8; font-weight:400;">—</dd></div>
+                <div style="text-align:right"><span id="claim-exp-badge"></span></div>
+              </div>
+              <div class="claim">
+                <div><dt>Issued at (iat)</dt><dd id="claim-iat-val" style="color:#94a3b8; font-weight:400;">—</dd></div>
+                <div style="text-align:right"><small id="claim-iat-rel"></small></div>
+              </div>
+              <div class="claim">
+                <div><dt>Not before (nbf)</dt><dd id="claim-nbf-val" style="color:#94a3b8; font-weight:400;">—</dd></div>
+                <div style="text-align:right"><small id="claim-nbf-rel"></small></div>
+              </div>
+            </div>
+            <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="ghost" id="btn-copy-claims">Copy claims summary</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <h2>Signature</h2>
+              <span style="font-size:0.75rem; color:#f59e0b; border:1px solid rgba(245,158,11,0.3); background:rgba(245,158,11,0.1); padding:4px 8px; border-radius:999px;">Not verified</span>
+            </div>
+            <div id="sig-out" class="sig-box">Signature part will appear here (base64url). This tool does not verify the signature — it only displays it.</div>
+            <div class="btn-row">
+              <button class="ghost" id="btn-copy-sig">Copy signature</button>
+            </div>
+            <p style="margin:12px 0 0; color:#64748b; font-size:0.82rem; line-height:1.5;">A JWT signature proves the token was signed by the issuer. To verify, you need the secret or public key — this decoder intentionally skips verification and never sends your token anywhere.</p>
+          </div>
+        </div>
+
+        <aside class="card notes">
+          <h2>How it works</h2>
+          <p><strong>Decode:</strong> Splits on <code>.</code> → base64url-decodes header (part 0) and payload (part 1) → <code>JSON.parse</code> → pretty-printed with 2-space indent.</p>
+          <ul>
+            <li><code>exp</code> / <code>iat</code> / <code>nbf</code> are Unix seconds; shown as UTC + local time and relative distance.</li>
+            <li>Signature (part 2) is displayed raw — no crypto check. Presence is optional for decoding.</li>
+            <li>Invalid base64url or JSON shows an error; whitespace around the token is trimmed.</li>
+            <li>All processing is local — paste sensitive tokens safely, but remember they may still be logged in browser history if you share a URL (this tool does not put the token in the URL).</li>
+          </ul>
+        </aside>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      const $ = (s) => document.querySelector(s);
+      const jwtInput = $('#jwt-input');
+      const headerOut = $('#header-out');
+      const payloadOut = $('#payload-out');
+      const sigOut = $('#sig-out');
+      const errEl = $('#error');
+      const toastEl = $('#toast');
+
+      const SAMPLE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE5MTYyMzkwMjIsIm5iZiI6MTUxNjIzOTAyMiwiZW1haWwiOiJqb2huQGV4YW1wbGUuY29tIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+
+      function showToast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toastEl.classList.remove('show'), 1800);
+      }
+
+      function showError(msg) {
+        errEl.textContent = msg;
+        errEl.classList.add('show');
+      }
+      function clearError() {
+        errEl.textContent = '';
+        errEl.classList.remove('show');
+      }
+
+      function base64UrlDecode(str) {
+        let s = str.replace(/-/g, '+').replace(/_/g, '/');
+        const pad = s.length % 4;
+        if (pad) s += '='.repeat(4 - pad);
+        // atob throws on invalid chars
+        const bin = atob(s);
+        // UTF-8 decode: atob returns binary string, convert via decodeURIComponent
+        try {
+          return decodeURIComponent(bin.split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+        } catch {
+          // fallback: if not valid UTF-8 sequence, return binary as-is
+          return bin;
+        }
+      }
+
+      function formatUnix(sec) {
+        if (typeof sec !== 'number' || !Number.isFinite(sec)) return null;
+        const d = new Date(sec * 1000);
+        if (isNaN(d.getTime())) return null;
+        return {
+          date: d,
+          iso: d.toISOString(),
+          local: d.toLocaleString(),
+          rel: relativeTime(d)
+        };
+      }
+
+      function relativeTime(d) {
+        const diff = Date.now() - d.getTime();
+        const abs = Math.abs(diff);
+        const future = diff < 0;
+        const secs = Math.floor(abs / 1000);
+        if (secs < 45) return future ? 'in a few seconds' : 'a few seconds ago';
+        const mins = Math.floor(secs / 60);
+        if (mins < 60) return future ? 'in ' + mins + ' min' + (mins===1?'':'s') : mins + ' min' + (mins===1?'':'s') + ' ago';
+        const hrs = Math.floor(mins / 60);
+        if (hrs < 24) return future ? 'in ' + hrs + ' hour' + (hrs===1?'':'s') : hrs + ' hour' + (hrs===1?'':'s') + ' ago';
+        const days = Math.floor(hrs / 24);
+        if (days < 30) return future ? 'in ' + days + ' day' + (days===1?'':'s') : days + ' day' + (days===1?'':'s') + ' ago';
+        const months = Math.floor(days / 30);
+        if (months < 12) return future ? 'in ' + months + ' month' + (months===1?'':'s') : months + ' month' + (months===1?'':'s') + ' ago';
+        const years = Math.floor(days / 365);
+        return future ? 'in ' + years + ' year' + (years===1?'':'s') : years + ' year' + (years===1?'':'s') + ' ago';
+      }
+
+      function setClaims(payload) {
+        const expEl = $('#claim-exp-val');
+        const expBadge = $('#claim-exp-badge');
+        const iatEl = $('#claim-iat-val');
+        const iatRel = $('#claim-iat-rel');
+        const nbfEl = $('#claim-nbf-val');
+        const nbfRel = $('#claim-nbf-rel');
+
+        function setOne(val, el, relEl, badgeEl) {
+          if (val === undefined) {
+            el.textContent = '— not present';
+            el.style.color = '#94a3b8';
+            el.style.fontWeight = '400';
+            if (relEl) relEl.textContent = '';
+            if (badgeEl) badgeEl.textContent = '';
+            return;
+          }
+          if (typeof val !== 'number' || !Number.isFinite(val)) {
+            el.textContent = String(val) + ' (not a number)';
+            el.style.color = '#f87171';
+            if (relEl) relEl.textContent = '';
+            if (badgeEl) badgeEl.innerHTML = '<span class="status-dot dot-err"></span>invalid';
+            return;
+          }
+          const f = formatUnix(val);
+          if (!f) {
+            el.textContent = String(val) + ' (invalid date)';
+            el.style.color = '#f87171';
+            if (badgeEl) badgeEl.innerHTML = '<span class="status-dot dot-err"></span>invalid';
+            return;
+          }
+          el.innerHTML = f.iso + '<br><small style="color:#94a3b8;font-weight:400">' + f.local + ' · ' + val + '</small>';
+          el.style.color = '#f8fafc';
+          el.style.fontWeight = '600';
+          if (relEl) relEl.textContent = f.rel;
+          if (badgeEl) {
+            const expired = f.date.getTime() < Date.now();
+            badgeEl.innerHTML = expired ? '<span class="status-dot dot-err"></span>expired' : '<span class="status-dot dot-ok"></span>valid';
+            badgeEl.style.color = expired ? '#f87171' : '#22c55e';
+            badgeEl.style.fontSize = '0.8rem';
+            badgeEl.style.fontWeight = '600';
+          }
+        }
+
+        setOne(payload ? payload.exp : undefined, expEl, null, expBadge);
+        // iat shows rel, no badge
+        if (payload && payload.iat !== undefined) {
+          const f = formatUnix(payload.iat);
+          if (f && typeof payload.iat === 'number') {
+            iatEl.innerHTML = f.iso + '<br><small style="color:#94a3b8;font-weight:400">' + f.local + ' · ' + payload.iat + '</small>';
+            iatEl.style.color = '#f8fafc';
+            iatEl.style.fontWeight = '600';
+            iatRel.textContent = f.rel;
+          } else {
+            setOne(payload.iat, iatEl, iatRel, null);
+          }
+        } else {
+          setOne(undefined, iatEl, iatRel, null);
+        }
+        if (payload && payload.nbf !== undefined) {
+          const f = formatUnix(payload.nbf);
+          if (f && typeof payload.nbf === 'number') {
+            nbfEl.innerHTML = f.iso + '<br><small style="color:#94a3b8;font-weight:400">' + f.local + ' · ' + payload.nbf + '</small>';
+            nbfEl.style.color = '#f8fafc';
+            nbfEl.style.fontWeight = '600';
+            nbfRel.textContent = f.rel + (f.date.getTime() > Date.now() ? ' — not yet valid' : '');
+          } else {
+            setOne(payload.nbf, nbfEl, nbfRel, null);
+          }
+        } else {
+          setOne(undefined, nbfEl, nbfRel, null);
+        }
+      }
+
+      function decodeJWT(raw) {
+        clearError();
+        const token = raw.trim();
+        if (!token) {
+          showError('Paste a JWT first.');
+          return;
+        }
+        const parts = token.split('.');
+        if (parts.length < 2 || parts.length > 3) {
+          showError('Invalid JWT: expected 2 or 3 dot-separated parts (header.payload[.signature]), got ' + parts.length + '.');
+          headerOut.textContent = '—';
+          headerOut.className = 'muted';
+          payloadOut.textContent = '—';
+          payloadOut.className = 'muted';
+          sigOut.textContent = 'Signature part will appear here (base64url). This tool does not verify the signature — it only displays it.';
+          sigOut.className = 'sig-box';
+          setClaims(null);
+          return;
+        }
+        const [hB64, pB64, sB64] = parts;
+        if (!hB64 || !pB64) {
+          showError('Invalid JWT: header and payload must be non-empty.');
+          return;
+        }
+
+        let headerObj = null, payloadObj = null;
+        let headerStr, payloadStr;
+
+        try {
+          headerStr = base64UrlDecode(hB64);
+        } catch (e) {
+          showError('Header base64url decode failed: ' + e.message);
+          headerOut.textContent = 'Decode error: ' + e.message;
+          headerOut.className = '';
+          headerOut.style.color = '#f87171';
+          return;
+        }
+        try {
+          payloadStr = base64UrlDecode(pB64);
+        } catch (e) {
+          showError('Payload base64url decode failed: ' + e.message);
+          payloadOut.textContent = 'Decode error: ' + e.message;
+          payloadOut.className = '';
+          payloadOut.style.color = '#f87171';
+          return;
+        }
+
+        try {
+          headerObj = JSON.parse(headerStr);
+          headerOut.textContent = JSON.stringify(headerObj, null, 2);
+          headerOut.className = '';
+          headerOut.style.color = '#e2e8f0';
+        } catch (e) {
+          showError('Header is not valid JSON: ' + e.message);
+          headerOut.textContent = headerStr;
+          headerOut.className = '';
+          headerOut.style.color = '#fbbf24';
+        }
+
+        try {
+          payloadObj = JSON.parse(payloadStr);
+          payloadOut.textContent = JSON.stringify(payloadObj, null, 2);
+          payloadOut.className = '';
+          payloadOut.style.color = '#e2e8f0';
+        } catch (e) {
+          showError((errEl.textContent ? errEl.textContent + ' — ' : '') + 'Payload is not valid JSON: ' + e.message);
+          payloadOut.textContent = payloadStr;
+          payloadOut.className = '';
+          payloadOut.style.color = '#fbbf24';
+        }
+
+        // signature placeholder
+        if (sB64 !== undefined) {
+          if (sB64 === '') {
+            sigOut.textContent = '(empty signature — alg:none or unsigned)';
+            sigOut.className = 'sig-box';
+          } else {
+            sigOut.textContent = sB64;
+            sigOut.className = 'sig-box has-sig';
+          }
+        } else {
+          sigOut.textContent = '(no signature part — only header.payload present)';
+          sigOut.className = 'sig-box';
+        }
+
+        setClaims(payloadObj);
+
+        // also show subtle success if no error still
+        if (!errEl.classList.contains('show') && headerObj && payloadObj) {
+          // ok — keep error hidden
+        }
+      }
+
+      async function copyText(text, label) {
+        if (!text || text === '—' || text.includes('will appear here')) {
+          showToast('Nothing to copy');
+          return;
+        }
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast(label + ' copied');
+        } catch {
+          // fallback
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); showToast(label + ' copied'); } catch { showToast('Copy failed'); }
+          ta.remove();
+        }
+      }
+
+      // events
+      $('#btn-decode').addEventListener('click', () => decodeJWT(jwtInput.value));
+      jwtInput.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') decodeJWT(jwtInput.value);
+      });
+      // live decode on input (debounced)
+      let t;
+      jwtInput.addEventListener('input', () => {
+        clearTimeout(t);
+        t = setTimeout(() => {
+          if (jwtInput.value.trim().split('.').length >= 2) decodeJWT(jwtInput.value);
+          else {
+            clearError();
+          }
+        }, 400);
+      });
+
+      $('#btn-clear').addEventListener('click', () => {
+        jwtInput.value = '';
+        headerOut.textContent = 'Header will appear here';
+        headerOut.className = 'muted';
+        headerOut.style.color = '';
+        payloadOut.textContent = 'Payload will appear here';
+        payloadOut.className = 'muted';
+        payloadOut.style.color = '';
+        sigOut.textContent = 'Signature part will appear here (base64url). This tool does not verify the signature — it only displays it.';
+        sigOut.className = 'sig-box';
+        setClaims(null);
+        clearError();
+        jwtInput.focus();
+      });
+
+      $('#btn-sample').addEventListener('click', () => {
+        jwtInput.value = SAMPLE;
+        decodeJWT(SAMPLE);
+      });
+
+      $('#btn-paste').addEventListener('click', async () => {
+        try {
+          const text = await navigator.clipboard.readText();
+          if (text) {
+            jwtInput.value = text.trim();
+            decodeJWT(jwtInput.value);
+          } else showToast('Clipboard empty');
+        } catch {
+          showToast('Paste failed — use Ctrl+V');
+        }
+      });
+
+      $('#btn-copy-header').addEventListener('click', () => copyText(headerOut.textContent, 'Header'));
+      $('#btn-copy-payload').addEventListener('click', () => copyText(payloadOut.textContent, 'Payload'));
+      $('#btn-copy-sig').addEventListener('click', () => copyText(sigOut.textContent, 'Signature'));
+      $('#btn-copy-claims').addEventListener('click', () => {
+        const exp = $('#claim-exp-val').innerText;
+        const iat = $('#claim-iat-val').innerText;
+        const nbf = $('#claim-nbf-val').innerText;
+        const txt = 'exp: ' + exp + '\niat: ' + iat + '\nnbf: ' + nbf;
+        copyText(txt, 'Claims');
+      });
+
+      // initial
+      setClaims(null);
+    </script>
+  </body>
+</html>

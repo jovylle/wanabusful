@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../shared/theme.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>Hash Generator</title>
+    <meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512 hashes from text or files. Runs entirely in your browser — no data leaves your device." />
+    <meta name="keywords" content="hash generator, MD5, SHA-1, SHA-256, SHA-384, SHA-512, checksum, Web Crypto" />
+    <meta name="author" content="Jovylle B. Bermudez" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://uft1.com/hash-generator/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://uft1.com/hash-generator/" />
+    <meta property="og:title" content="Free Hash Generator — MD5, SHA-1, SHA-256, SHA-384, SHA-512" />
+    <meta property="og:description" content="Generate hashes from text or files in your browser. No upload, no server." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Hash Generator — free online" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Hash Generator","url":"https://uft1.com/hash-generator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512 hashes from text or files. Runs entirely in the browser."}</script>
+    <style>
+      :root { font-family: "Space Grotesk", system-ui, sans-serif; background-color: #04070f; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: #020617; }
+      .page { max-width: 1100px; margin: 0 auto; padding: 48px 24px 72px; }
+      .hero { margin-bottom: 32px; }
+      .eyebrow { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.8rem; color: #94a3b8; margin: 0 0 10px; }
+      .hero h1 { margin: 0; font-size: clamp(2.5rem, 4vw, 3.2rem); line-height: 1.1; color: #f8fafc; }
+      .lede { margin-top: 12px; color: #cbd5f5; max-width: 720px; line-height: 1.6; }
+      .hero-links { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+      .hero-links a { color: #38bdf8; font-weight: 500; text-decoration: none; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+      .card { border-radius: 20px; padding: 28px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(148, 163, 184, 0.3); box-shadow: 0 20px 40px rgba(2, 6, 23, 0.65); }
+      .card label { font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; display: block; margin-bottom: 6px; }
+      textarea { width: 100%; min-height: 140px; border-radius: 14px; border: 1px solid rgba(226, 232, 240, 0.25); background: rgba(15, 23, 42, 0.9); color: #e2e8f0; font-family: "Space Grotesk", system-ui, monospace; padding: 14px; resize: vertical; font-size: 0.92rem; }
+      textarea:focus, select:focus, input[type="file"]:focus { outline: 2px solid rgba(56,189,248,0.5); outline-offset: 1px; }
+      select { width: 100%; border-radius: 999px; border: 1px solid rgba(226, 232, 240, 0.25); background: rgba(15, 23, 42, 0.9); color: #e2e8f0; font-family: inherit; padding: 12px 16px; font-size: 0.95rem; }
+      input[type="file"] { width: 100%; border-radius: 14px; border: 1px solid rgba(226, 232, 240, 0.25); background: rgba(15, 23, 42, 0.9); color: #e2e8f0; font-family: inherit; padding: 10px 14px; font-size: 0.9rem; }
+      input[type="file"]::file-selector-button { border-radius: 999px; border: none; background: rgba(148,163,184,0.25); color: #e2e8f0; padding: 6px 14px; font-family: inherit; font-weight: 600; cursor: pointer; margin-right: 12px; }
+      .field { margin-bottom: 16px; }
+      .field:last-child { margin-bottom: 0; }
+      .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+      button { padding: 12px 20px; border-radius: 14px; border: none; font-size: 0.95rem; font-weight: 600; color: #fff; cursor: pointer; font-family: inherit; }
+      button.primary { background: linear-gradient(135deg, #38bdf8, #6366f1); }
+      button.secondary { background: rgba(148, 163, 184, 0.25); border: 1px solid rgba(148, 163, 184, 0.4); color: #e2e8f0; }
+      button:hover { opacity: 0.95; }
+      button:disabled { opacity: 0.5; cursor: not-allowed; }
+      .output-wrap { position: relative; }
+      .hash-output { width: 100%; min-height: 72px; border-radius: 14px; border: 1px solid rgba(226, 232, 240, 0.25); background: rgba(15, 23, 42, 0.9); color: #7dd3fc; font-family: ui-monospace, "Cascadia Code", "Fira Code", monospace; padding: 14px; font-size: 0.85rem; word-break: break-all; line-height: 1.6; }
+      .hash-output.empty { color: #64748b; font-style: italic; }
+      .meta { margin-top: 10px; font-size: 0.8rem; color: #64748b; }
+      .or-divider { display: flex; align-items: center; gap: 12px; margin: 4px 0; color: #64748b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; }
+      .or-divider::before, .or-divider::after { content: ""; flex: 1; height: 1px; background: rgba(148,163,184,0.2); }
+      .notes h2 { margin-top: 0; font-size: 1.5rem; color: #f8fafc; }
+      .notes p, .notes ul { color: #cbd5f5; line-height: 1.6; }
+      .notes ul { padding-left: 20px; }
+      .notes a { color: #38bdf8; }
+      code { background: rgba(59, 130, 246, 0.15); padding: 2px 6px; border-radius: 6px; font-size: 0.9rem; }
+      .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #e2e8f0; border: 1px solid rgba(148,163,184,0.3); padding: 10px 16px; border-radius: 999px; font-size: 0.85rem; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+      .toast.show { opacity: 1; }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Cryptographic hashes</p>
+        <h1>Hash Generator</h1>
+        <p class="lede">
+          Generate hashes from text or files. MD5 runs locally in JS; SHA family uses Web Crypto. Nothing leaves your browser.
+        </p>
+        <div class="hero-links">
+          <a href="../">← Back to hub</a>
+          <a href="https://github.com/jovylle/wanabusful/tree/main/hash-generator" target="_blank" rel="noreferrer">View source</a>
+        </div>
+      </header>
+
+      <section class="grid">
+        <div class="card">
+          <div class="field">
+            <label for="algo">Algorithm</label>
+            <select id="algo">
+              <option value="SHA-256" selected>SHA-256</option>
+              <option value="SHA-1">SHA-1</option>
+              <option value="SHA-384">SHA-384</option>
+              <option value="SHA-512">SHA-512</option>
+              <option value="MD5">MD5</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="input">Text input</label>
+            <textarea id="input" placeholder="Type or paste text here…"></textarea>
+          </div>
+
+          <div class="or-divider">or</div>
+
+          <div class="field">
+            <label for="file">File input</label>
+            <input type="file" id="file" />
+            <div class="meta" id="fileMeta"></div>
+          </div>
+
+          <div class="btn-row">
+            <button class="secondary" id="clearBtn">Clear</button>
+          </div>
+
+          <div class="field" style="margin-top:20px;">
+            <label>Hash (hex)</label>
+            <div class="output-wrap">
+              <div id="output" class="hash-output empty">Hash will appear here…</div>
+            </div>
+            <div class="meta" id="hashMeta"></div>
+            <div class="btn-row">
+              <button class="primary" id="copyBtn" disabled>Copy hash</button>
+            </div>
+          </div>
+        </div>
+
+        <aside class="card notes">
+          <h2>How it works</h2>
+          <p>
+            <strong>SHA-1 / SHA-256 / SHA-384 / SHA-512</strong> use the browser's <code>SubtleCrypto.digest()</code> (Web Crypto API).
+          </p>
+          <p>
+            <strong>MD5</strong> is computed with an inline JavaScript implementation (no network, no dependencies).
+          </p>
+          <ul>
+            <li>Text is hashed as UTF-8 bytes.</li>
+            <li>Files are read as raw bytes via <code>ArrayBuffer</code>.</li>
+            <li>Live hashing — result updates as you type or change algorithm.</li>
+            <li>File input takes precedence when a file is selected.</li>
+            <li>No data is sent to any server — everything runs locally.</li>
+          </ul>
+          <p style="font-size:0.85rem;color:#94a3b8;">MD5 is cryptographically broken — use SHA-256 or stronger for security.</p>
+        </aside>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      // ── DOM refs ──
+      const algoEl = document.getElementById('algo');
+      const inputEl = document.getElementById('input');
+      const fileEl = document.getElementById('file');
+      const fileMetaEl = document.getElementById('fileMeta');
+      const outputEl = document.getElementById('output');
+      const hashMetaEl = document.getElementById('hashMeta');
+      const copyBtn = document.getElementById('copyBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const toastEl = document.getElementById('toast');
+
+      let fileBuffer = null;
+      let fileName = '';
+      let lastHash = '';
+
+      // ── MD5 inline (RFC 1321) ──
+      // Based on public-domain implementation; self-contained, no deps.
+      function md5(arrayBuffer) {
+        const bytes = new Uint8Array(arrayBuffer);
+        // Convert bytes to little-endian words via raw bytes for MD5
+        // MD5 operates on bytes directly; we implement standard padding.
+        const origLen = bytes.length;
+        const bitLen = origLen * 8;
+
+        // Padding: append 0x80, then zeros, then 64-bit little-endian length
+        const paddedLen = origLen + 1 + 8 + (64 - ((origLen + 1 + 8) % 64)) % 64;
+        const padded = new Uint8Array(paddedLen);
+        padded.set(bytes);
+        padded[origLen] = 0x80;
+        // length in bits as 64-bit LE at the end
+        const view = new DataView(padded.buffer);
+        view.setUint32(paddedLen - 8, bitLen >>> 0, true);
+        view.setUint32(paddedLen - 4, Math.floor(bitLen / 0x100000000), true);
+
+        let a = 0x67452301, b = 0xEFCDAB89, c = 0x98BADCFE, d = 0x10325476;
+
+        function cmn(q, a, b, x, s, t) {
+          a = (a + q + x + t) | 0;
+          return ((a << s) | (a >>> (32 - s))) + b | 0;
+        }
+        function ff(a, b, c, d, x, s, t) { return cmn((b & c) | (~b & d), a, b, x, s, t); }
+        function gg(a, b, c, d, x, s, t) { return cmn((b & d) | (c & ~d), a, b, x, s, t); }
+        function hh(a, b, c, d, x, s, t) { return cmn(b ^ c ^ d, a, b, x, s, t); }
+        function ii(a, b, c, d, x, s, t) { return cmn(c ^ (b | ~d), a, b, x, s, t); }
+
+        for (let i = 0; i < paddedLen; i += 64) {
+          const X = new Int32Array(16);
+          for (let j = 0; j < 16; j++) X[j] = view.getInt32(i + j * 4, true);
+
+          let aa = a, bb = b, cc = c, dd = d;
+
+          a = ff(a, b, c, d, X[0],  7,  0xD76AA478); d = ff(d, a, b, c, X[1],  12, 0xE8C7B756); c = ff(c, d, a, b, X[2],  17, 0x242070DB); b = ff(b, c, d, a, X[3],  22, 0xC1BDCEEE);
+          a = ff(a, b, c, d, X[4],  7,  0xF57C0FAF); d = ff(d, a, b, c, X[5],  12, 0x4787C62A); c = ff(c, d, a, b, X[6],  17, 0xA8304613); b = ff(b, c, d, a, X[7],  22, 0xFD469501);
+          a = ff(a, b, c, d, X[8],  7,  0x698098D8); d = ff(d, a, b, c, X[9],  12, 0x8B44F7AF); c = ff(c, d, a, b, X[10], 17, 0xFFFF5BB1); b = ff(b, c, d, a, X[11], 22, 0x895CD7BE);
+          a = ff(a, b, c, d, X[12], 7,  0x6B901122); d = ff(d, a, b, c, X[13], 12, 0xFD987193); c = ff(c, d, a, b, X[14], 17, 0xA679438E); b = ff(b, c, d, a, X[15], 22, 0x49B40821);
+
+          a = gg(a, b, c, d, X[1],  5,  0xF61E2562); d = gg(d, a, b, c, X[6],  9,  0xC040B340); c = gg(c, d, a, b, X[11], 14, 0x265E5A51); b = gg(b, c, d, a, X[0],  20, 0xE9B6C7AA);
+          a = gg(a, b, c, d, X[5],  5,  0xD62F105D); d = gg(d, a, b, c, X[10], 9,  0x02441453); c = gg(c, d, a, b, X[15], 14, 0xD8A1E681); b = gg(b, c, d, a, X[4],  20, 0xE7D3FBC8);
+          a = gg(a, b, c, d, X[9],  5,  0x21E1CDE6); d = gg(d, a, b, c, X[14], 9,  0xC33707D6); c = gg(c, d, a, b, X[3],  14, 0xF4D50D87); b = gg(b, c, d, a, X[8],  20, 0x455A14ED);
+          a = gg(a, b, c, d, X[13], 5,  0xA9E3E905); d = gg(d, a, b, c, X[2],  9,  0xFCEFA3F8); c = gg(c, d, a, b, X[7],  14, 0x676F02D9); b = gg(b, c, d, a, X[12], 20, 0x8D2A4C8A);
+
+          a = hh(a, b, c, d, X[5],  4,  0xFFFA3942); d = hh(d, a, b, c, X[8],  11, 0x8771F681); c = hh(c, d, a, b, X[11], 16, 0x6D9D6122); b = hh(b, c, d, a, X[14], 23, 0xFDE5380C);
+          a = hh(a, b, c, d, X[1],  4,  0xA4BEEA44); d = hh(d, a, b, c, X[4],  11, 0x4BDECFA9); c = hh(c, d, a, b, X[7],  16, 0xF6BB4B60); b = hh(b, c, d, a, X[10], 23, 0xBEBFBC70);
+          a = hh(a, b, c, d, X[13], 4,  0x289B7EC6); d = hh(d, a, b, c, X[0],  11, 0xEAA127FA); c = hh(c, d, a, b, X[3],  16, 0xD4EF3085); b = hh(b, c, d, a, X[6],  23, 0x04881D05);
+          a = hh(a, b, c, d, X[9],  4,  0xD9D4D039); d = hh(d, a, b, c, X[12], 11, 0xE6DB99E5); c = hh(c, d, a, b, X[15], 16, 0x1FA27CF8); b = hh(b, c, d, a, X[2],  23, 0xC4AC5665);
+
+          a = ii(a, b, c, d, X[0],  6,  0xF4292244); d = ii(d, a, b, c, X[7],  10, 0x432AFF97); c = ii(c, d, a, b, X[14], 15, 0xAB9423A7); b = ii(b, c, d, a, X[5],  21, 0xFC93A039);
+          a = ii(a, b, c, d, X[12], 6,  0x655B59C3); d = ii(d, a, b, c, X[3],  10, 0x8F0CCC92); c = ii(c, d, a, b, X[10], 15, 0xFFEFF47D); b = ii(b, c, d, a, X[1],  21, 0x85845DD1);
+          a = ii(a, b, c, d, X[8],  6,  0x6FA87E4F); d = ii(d, a, b, c, X[15], 10, 0xFE2CE6E0); c = ii(c, d, a, b, X[6],  15, 0xA3014314); b = ii(b, c, d, a, X[13], 21, 0x4E0811A1);
+          a = ii(a, b, c, d, X[4],  6,  0xF7537E82); d = ii(d, a, b, c, X[11], 10, 0xBD3AF235); c = ii(c, d, a, b, X[2],  15, 0x2AD7D2BB); b = ii(b, c, d, a, X[9],  21, 0xEB86D391);
+
+          a = (a + aa | 0); b = (b + bb | 0); c = (c + cc | 0); d = (d + dd | 0);
+        }
+
+        // Convert to hex (little-endian per word)
+        function wordToHex(w) {
+          let h = '';
+          for (let i = 0; i < 4; i++) {
+            const b = (w >>> (i * 8)) & 0xFF;
+            h += (b < 16 ? '0' : '') + b.toString(16);
+          }
+          return h;
+        }
+        return wordToHex(a) + wordToHex(b) + wordToHex(c) + wordToHex(d);
+      }
+
+      // ── Helpers ──
+      function bytesToHex(buffer) {
+        const bytes = new Uint8Array(buffer);
+        let hex = '';
+        for (let i = 0; i < bytes.length; i++) hex += bytes[i].toString(16).padStart(2, '0');
+        return hex;
+      }
+
+      function showToast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toastEl.classList.remove('show'), 1800);
+      }
+
+      function setOutput(hex, algo, sourceLabel) {
+        if (!hex) {
+          outputEl.textContent = 'Hash will appear here…';
+          outputEl.classList.add('empty');
+          hashMetaEl.textContent = '';
+          copyBtn.disabled = true;
+          lastHash = '';
+          return;
+        }
+        outputEl.textContent = hex;
+        outputEl.classList.remove('empty');
+        hashMetaEl.textContent = algo + ' · ' + hex.length / 2 + ' bytes · ' + sourceLabel;
+        copyBtn.disabled = false;
+        lastHash = hex;
+      }
+
+      async function computeHash() {
+        const algo = algoEl.value;
+
+        // File takes precedence if loaded
+        if (fileBuffer !== null) {
+          try {
+            let hex;
+            if (algo === 'MD5') hex = md5(fileBuffer);
+            else {
+              const digest = await crypto.subtle.digest(algo, fileBuffer);
+              hex = bytesToHex(digest);
+            }
+            setOutput(hex, algo, 'file: ' + fileName);
+          } catch (e) {
+            setOutput('', '', '');
+            hashMetaEl.textContent = 'Error: ' + e.message;
+          }
+          return;
+        }
+
+        const text = inputEl.value;
+        if (!text) {
+          setOutput('', '', '');
+          return;
+        }
+        try {
+          let hex;
+          if (algo === 'MD5') {
+            const enc = new TextEncoder().encode(text);
+            hex = md5(enc.buffer);
+          } else {
+            const enc = new TextEncoder().encode(text);
+            const digest = await crypto.subtle.digest(algo, enc);
+            hex = bytesToHex(digest);
+          }
+          setOutput(hex, algo, text.length + ' chars');
+        } catch (e) {
+          setOutput('', '', '');
+          hashMetaEl.textContent = 'Error: ' + e.message;
+        }
+      }
+
+      // ── Events ──
+      algoEl.addEventListener('change', computeHash);
+      inputEl.addEventListener('input', () => {
+        // If user types while a file is selected, clear file selection
+        if (fileBuffer !== null && inputEl.value) {
+          fileBuffer = null;
+          fileName = '';
+          fileEl.value = '';
+          fileMetaEl.textContent = '';
+        }
+        computeHash();
+      });
+
+      fileEl.addEventListener('change', async () => {
+        const file = fileEl.files[0];
+        if (!file) {
+          fileBuffer = null;
+          fileName = '';
+          fileMetaEl.textContent = '';
+          computeHash();
+          return;
+        }
+        fileName = file.name;
+        fileMetaEl.textContent = file.name + ' · ' + (file.size).toLocaleString() + ' bytes';
+        try {
+          fileBuffer = await file.arrayBuffer();
+        } catch (e) {
+          fileMetaEl.textContent = 'Failed to read file: ' + e.message;
+          fileBuffer = null;
+          return;
+        }
+        // Clear text hint
+        computeHash();
+      });
+
+      copyBtn.addEventListener('click', async () => {
+        if (!lastHash) return;
+        try {
+          await navigator.clipboard.writeText(lastHash);
+          showToast('Copied to clipboard');
+        } catch {
+          // Fallback
+          const ta = document.createElement('textarea');
+          ta.value = lastHash;
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); showToast('Copied to clipboard'); } catch { showToast('Copy failed'); }
+          ta.remove();
+        }
+      });
+
+      clearBtn.addEventListener('click', () => {
+        inputEl.value = '';
+        fileEl.value = '';
+        fileBuffer = null;
+        fileName = '';
+        fileMetaEl.textContent = '';
+        setOutput('', '', '');
+        inputEl.focus();
+      });
+
+      // Initial demo hash for empty state guidance
+      // Don't auto-hash empty; just show placeholder.
+    </script>
+  </body>
+</html>
