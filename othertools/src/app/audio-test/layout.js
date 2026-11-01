@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Stereo audio test — left/right channel checker online | UFT1 Tools",
+  title: "Stereo audio test — left/right channel checker online",
   description:
     "Verify left and right speaker channels. Stereo channel test in the browser — no download.",
   alternates: { canonical: "https://other.uft1.com/audio-test" },

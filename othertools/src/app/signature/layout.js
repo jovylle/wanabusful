@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Free signature pad — draw & export PNG/SVG online | UFT1 Tools",
+  title: "Free signature pad — draw & export PNG/SVG online",
   description:
     "Draw signatures with mouse or touch, export as image. Canvas-based e-signature pad in the browser. No account required.",
   alternates: { canonical: "https://other.uft1.com/signature" },
