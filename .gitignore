@@ -40,3 +40,4 @@ othertools/.vercel
 next-env.d.ts
 index.html.orig-500lines
 .wrangler/
+.worktrees/
