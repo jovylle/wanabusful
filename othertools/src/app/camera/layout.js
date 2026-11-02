@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Free online camera test — webcam preview & photo capture | UFT1 Tools",
+  title: "Free online camera test — webcam preview & photo capture",
   description:
     "Test your webcam in the browser: live preview, capture photos, MediaDevices API. No install. Privacy-friendly — video stays on your device.",
   alternates: { canonical: "https://other.uft1.com/camera" },

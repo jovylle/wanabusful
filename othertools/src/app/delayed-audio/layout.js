@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Delayed audio player — Web Audio delay online | UFT1 Tools",
+  title: "Delayed audio player — Web Audio delay online",
   description:
     "Play audio with a configurable delay using the Web Audio API. Test latency, sync, and playback in the browser.",
   alternates: { canonical: "https://other.uft1.com/delayed-audio" },
